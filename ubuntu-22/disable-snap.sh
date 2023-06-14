@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/env sh
 
 #
 echo 'Package: snapd

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/env sh
 
 #
 sudo apt install --yes \
