@@ -16,7 +16,8 @@ eval "$(starship init zsh)"
 touch ~/.config/starship.toml
 
 #
-echo 'add_newline = false\n' >> ~/.config/starship.toml
+echo 'add_newline = false
+' >> ~/.config/starship.toml
 
 #
 starship preset plain-text-symbols >> ~/.config/starship.toml
