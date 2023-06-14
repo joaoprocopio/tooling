@@ -5,7 +5,7 @@ for pkg in docker.io docker-doc docker-compose podman-docker containerd runc; do
 
 #
 sudo apt-get update
-sudo apt-get install ca-certificates curl gnupg
+sudo apt-get install --yes ca-certificates curl gnupg
 
 #
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/docker.gpg
