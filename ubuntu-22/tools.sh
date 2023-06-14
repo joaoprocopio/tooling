@@ -7,5 +7,6 @@ sudo apt install --yes \
   gimp obs-studio qbittorrent vlc \
   gnome-tweaks dconf-editor gnome-shell-extensions
 
+#
 cp ../.gitconfig ~/
 cp ../.gitignore ~/
