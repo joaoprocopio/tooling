@@ -1,8 +1,12 @@
 #!/bin/env sh
 
 #
-read -p "Enter your email at your company: " WORK_EMAIL
-read -p "Enter your username at your company: " WORK_USERNAME
+read -p "Type here your personal username: " PERSONAL_USERNAME
+read -p "Type here your personal email: " PERSONAL_EMAIL
+
+#
+read -p "Type here your work username: " WORK_USERNAME
+read -p "Type here your work email: " WORK_EMAIL
 
 #
 echo 'Useful software that cant be installed programatically
@@ -19,8 +23,28 @@ sudo apt install --yes \
   gnome-tweaks dconf-editor gnome-shell-extensions
 
 #
-cp ../.gitconfig ~/
-cp ../.gitignore ~/
+touch ~/.gitignore
+touch ~/.gitconfig
+
+#
+echo "**/.vscode/**\n" | tee ~/.gitignore > /dev/null
+
+#
+echo "[user]
+  name = $PERSONAL_USERNAME
+  email = $PERSONAL_EMAIL
+[alias]
+  st = status
+  cm = commit
+  df = diff
+  aa = add --all
+  lg = log --graph --decorate --abbrev-commit --all --pretty=format:'%C(auto)%h%Creset %C(cyan)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
+[init]
+  defaultBranch = main
+[core]
+  excludesfile = /home/joaoprocopio/.gitignore
+  editor = code --wait" | tee ~/.gitconfig > /dev/null
+
 
 #
 echo "
