@@ -1,3 +1,6 @@
+#!/bin/sh
+
+#
 sudo apt install --yes \
   tmux htop neovim \
   git tree wget curl ffmpeg \
