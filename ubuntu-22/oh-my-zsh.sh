@@ -13,14 +13,14 @@ curl -sS https://starship.rs/install.sh | sh
 echo '
 # starship
 eval "$(starship init zsh)"
-' >> ~/.zshrc
+' | tee --append ~/.zshrc > /dev/null
 
 #
 touch ~/.config/starship.toml
 
 #
 echo 'add_newline = false
-' >> ~/.config/starship.toml
+' | tee ~/.config/starship.toml
 
 #
-starship preset plain-text-symbols >> ~/.config/starship.toml
+starship preset plain-text-symbols | tee --append ~/.config/starship.toml
