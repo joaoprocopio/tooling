@@ -3,7 +3,8 @@
 #
 echo 'Package: snapd
 Pin: release a=*
-Pin-Priority: -10' | sudo tee /etc/apt/preferences.d/nosnap.pref
+Pin-Priority: -10' | \
+sudo tee /etc/apt/preferences.d/nosnap.pref > /dev/null
 
 #
 sudo snap remove --purge firefox
