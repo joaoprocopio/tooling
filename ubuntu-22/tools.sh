@@ -45,10 +45,18 @@ echo "[user]
   excludesfile = /home/joaoprocopio/.gitignore
   editor = code --wait" | tee ~/.gitconfig > /dev/null
 
-
 #
+if [ -n "$WORK_EMAIL" ] && [ -n "$WORK_USERNAME" ]
+then
 echo "
 # aliases
 alias ll='ls -lha'
-alias clone='git clone --config user.name='"$WORK_EMAIL"' --config user.email='"$WORK_USERNAME"''
+alias clone='git clone --config user.name=\"$WORK_EMAIL\" --config user.email=\"$WORK_USERNAME\"'
 " | tee --append ~/.zshrc > /dev/null
+
+else
+echo "
+# aliases
+alias ll='ls -lha'
+" | tee --append ~/.zshrc > /dev/null
+fi
