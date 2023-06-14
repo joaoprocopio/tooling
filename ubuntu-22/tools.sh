@@ -6,3 +6,6 @@ sudo apt install --yes \
   git tree wget curl ffmpeg \
   gimp obs-studio qbittorrent vlc \
   gnome-tweaks dconf-editor gnome-shell-extensions
+
+cp ../.gitconfig ~/
+cp ../.gitignore ~/
