@@ -1,8 +1,12 @@
 #!/bin/env sh
 
-# https://www.google.com/intl/pt-BR/chrome/
-# https://bitwarden.com/download/
-# https://code.visualstudio.com/download
+#
+echo 'Useful software that cant be installed programatically
+https://www.google.com/intl/pt-BR/chrome/
+https://bitwarden.com/download/
+https://code.visualstudio.com/download/
+'
+
 
 #
 sudo apt install --yes \
