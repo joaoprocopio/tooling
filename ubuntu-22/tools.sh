@@ -35,9 +35,6 @@ echo "[user]
   email = $PERSONAL_EMAIL
 [alias]
   st = status
-  cm = commit
-  df = diff
-  aa = add --all
   lg = log --graph --decorate --abbrev-commit --all --pretty=format:'%C(auto)%h%Creset %C(cyan)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
 [init]
   defaultBranch = main
@@ -46,17 +43,13 @@ echo "[user]
   editor = code --wait" | tee ~/.gitconfig > /dev/null
 
 #
-if [ -n "$WORK_EMAIL" ] && [ -n "$WORK_USERNAME" ]
-then
-echo "
-# aliases
+echo "\n# aliases
 alias ll='ls -lha'
-alias clone='git clone --config user.name=\"$WORK_EMAIL\" --config user.email=\"$WORK_USERNAME\"'
-" | tee --append ~/.zshrc > /dev/null
+alias dk='docker'
+alias dkc='docker compose'
+alias vpn='openvpn3'" | tee --append ~/.zshrc > /dev/null
 
-else
-echo "
-# aliases
-alias ll='ls -lha'
-" | tee --append ~/.zshrc > /dev/null
+#
+if [ -n "$WORK_EMAIL" ] && [ -n "$WORK_USERNAME" ]; then
+  echo "alias clone='git clone --config user.name=\"$WORK_EMAIL\" --config user.email=\"$WORK_USERNAME\"'" | tee --append ~/.zshrc > /dev/null
 fi
