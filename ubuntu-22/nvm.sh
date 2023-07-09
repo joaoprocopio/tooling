@@ -37,4 +37,4 @@ load-nvmrc() {
 
 add-zsh-hook chpwd load-nvmrc
 load-nvmrc
-' | tee --append ~/.zshrc > /dev/null
+' | tee --append ~/.zshrc >/dev/null

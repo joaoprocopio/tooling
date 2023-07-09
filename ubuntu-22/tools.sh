@@ -30,7 +30,7 @@ touch ~/.gitignore
 touch ~/.gitconfig
 
 #
-echo "**/.vscode/**\n" | tee ~/.gitignore > /dev/null
+echo "**/.vscode/**\n" | tee ~/.gitignore >/dev/null
 
 #
 echo "[user]
@@ -43,16 +43,16 @@ echo "[user]
   defaultBranch = main
 [core]
   excludesfile = /home/joaoprocopio/.gitignore
-  editor = code --wait" | tee ~/.gitconfig > /dev/null
+  editor = code --wait" | tee ~/.gitconfig >/dev/null
 
 #
 echo "\n# aliases
 alias ll='ls -lha'
 alias dk='docker'
 alias dkc='docker compose'
-alias vpn='openvpn3'" | tee --append ~/.zshrc > /dev/null
+alias vpn='openvpn3'" | tee --append ~/.zshrc >/dev/null
 
 #
 if [ -n "$WORK_EMAIL" ] && [ -n "$WORK_USERNAME" ]; then
-  echo "alias clone='git clone --config user.name=\"$WORK_EMAIL\" --config user.email=\"$WORK_USERNAME\"'" | tee --append ~/.zshrc > /dev/null
+  echo "alias clone='git clone --config user.name=\"$WORK_EMAIL\" --config user.email=\"$WORK_USERNAME\"'" | tee --append ~/.zshrc >/dev/null
 fi

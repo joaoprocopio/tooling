@@ -7,14 +7,14 @@ curl -sSL https://install.python-poetry.org | python3 -
 echo '
 # poetry
 export PATH="/home/joaoprocopio/.local/bin:$PATH"
-' | tee --append ~/.zshrc > /dev/null
+' | tee --append ~/.zshrc >/dev/null
 
 #
 source ~/.zshrc
 
 #
 mkdir $ZSH_CUSTOM/plugins/poetry
-poetry completions zsh > $ZSH_CUSTOM/plugins/poetry/_poetry
+poetry completions zsh >$ZSH_CUSTOM/plugins/poetry/_poetry
 
 # ai vc tem que adicionar em .zshrc
 # plugins=(
