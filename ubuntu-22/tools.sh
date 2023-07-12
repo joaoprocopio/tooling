@@ -21,7 +21,7 @@ sudo apt update
 #
 sudo apt install --yes \
   tmux htop neovim \
-  git tree wget curl ffmpeg \
+  git tree wget curl ffmpeg net-tools \
   gimp obs-studio qbittorrent vlc \
   gnome-tweaks dconf-editor gnome-shell-extensions
 
