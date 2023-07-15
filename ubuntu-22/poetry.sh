@@ -13,17 +13,6 @@ export PATH="/home/joaoprocopio/.local/bin:$PATH"
 source ~/.zshrc
 
 #
-mkdir $ZSH_CUSTOM/plugins/poetry
-poetry completions zsh >$ZSH_CUSTOM/plugins/poetry/_poetry
-
-# ai vc tem que adicionar em .zshrc
-# plugins=(
-#   ...
-#   poetry
-#   ...
-# )
-
-#
 poetry config virtualenvs.create true
 poetry config virtualenvs.in-project true
 poetry config virtualenvs.prefer-active-python true
