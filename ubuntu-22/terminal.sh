@@ -22,8 +22,4 @@ eval "$(starship init zsh)"
 touch ~/.config/starship.toml
 
 #
-echo 'add_newline = false
-' | tee ~/.config/starship.toml >/dev/null
-
-#
 starship preset plain-text-symbols | tee --append ~/.config/starship.toml >/dev/null
