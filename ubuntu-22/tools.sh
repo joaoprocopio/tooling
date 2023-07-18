@@ -13,10 +13,17 @@ sudo apt update
 
 #
 sudo apt install --yes \
+  tmux htop \
   git tree wget curl ffmpeg net-tools \
   gimp obs-studio qbittorrent vlc \
   gnome-tweaks dconf-editor gnome-shell-extensions \
   libfuse2
+
+#
+git clone https://github.com/gpakosz/.tmux.git ~/.tmux
+ln -s -f ~/.tmux/.tmux.conf ~/.tmux.conf
+cp ~/.tmux/.tmux.conf.local ~/
+
 
 #
 touch ~/.gitignore
