@@ -6,7 +6,7 @@ curl -sSL https://install.python-poetry.org | python3 -
 #
 echo '
 # poetry
-export PATH="/home/joaoprocopio/.local/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
 ' | tee --append ~/.zshrc >/dev/null
 
 #

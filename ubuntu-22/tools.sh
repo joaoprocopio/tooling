@@ -35,7 +35,7 @@ echo "[user]
 [init]
   defaultBranch = main
 [core]
-  excludesfile = /home/joaoprocopio/.gitignore
+  excludesfile = /home/$USER/.gitignore
   editor = code --wait" | tee ~/.gitconfig >/dev/null
 
 #
