@@ -13,3 +13,6 @@ cd ~/neovim
 make CMAKE_BUILD_TYPE=Release
 sudo make install
 rm -rf build
+
+#
+git clone https://github.com/nvim-lua/kickstart.nvim.git ~/.config/nvim
