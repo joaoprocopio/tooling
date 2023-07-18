@@ -15,4 +15,8 @@ sudo make install
 rm -rf build
 
 #
-git clone https://github.com/nvim-lua/kickstart.nvim.git ~/.config/nvim
+sudo ln -s /usr/local/bin/nvim /usr/local/bin/vim
+
+#
+mkdir ~/.config/nvim
+curl -o ~/.config/nvim/init.lua https://raw.githubusercontent.com/nvim-lua/kickstart.nvim/master/init.lua
