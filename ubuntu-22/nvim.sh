@@ -4,14 +4,12 @@
 sudo apt-get --yes install ninja-build libtool autoconf automake cmake gcc make unzip patch gettext curl git
 
 #
-curl -fsSL https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz --output nvim.tar.gz
+git clone -b stable --depth 1 https://github.com/neovim/neovim ~/neovim
 
 #
-tar xzf nvim.tar.gz
+cd ~/neovim
 
 #
-sudo mv nvim-linux64/bin/nvim /usr/bin/
-
-#
-rm -rf nvim-linux64
-rm nvim.tar.gz
+make CMAKE_BUILD_TYPE=Release
+sudo make install
+rm -rf build
