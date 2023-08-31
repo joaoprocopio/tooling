@@ -1,5 +1,6 @@
 #!/bin/env sh
 
+# base installation
 #
 for pkg in docker.io docker-doc docker-compose podman-docker containerd runc; do sudo apt-get remove $pkg; done
 
@@ -23,3 +24,17 @@ sudo apt-get install --yes \
   docker-ce docker-ce-cli \
   containerd.io docker-buildx-plugin \
   docker-compose-plugin
+
+# post installation
+#
+sudo groupadd docker
+
+#
+sudo usermod -aG docker $USER
+
+#
+newgrp docker
+
+#
+sudo systemctl enable docker.service
+sudo systemctl enable containerd.service
