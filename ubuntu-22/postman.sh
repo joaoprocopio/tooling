@@ -19,3 +19,6 @@ Name=Postman
 Terminal=false
 Type=Application
 Version=1.0" | tee ~/.local/share/applications/Postman.desktop >/dev/null
+
+#
+rm postman.tar.gz
