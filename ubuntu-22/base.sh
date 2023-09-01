@@ -14,7 +14,6 @@ sudo apt install --yes \
 
 #
 echo "\n# aliases
-alias ll='ls -lha'
 alias dk='docker'
 alias dkc='docker compose'
 alias vpn='openvpn3'" | tee --append ~/.zshrc >/dev/null
