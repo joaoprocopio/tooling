@@ -26,6 +26,7 @@ sudo apt-get install --yes \
   docker-buildx-plugin docker-compose-plugin
 
 # post installation
+# a partir daqui tem que ser executado comando a comando no seu shell, o script parece não cobrir
 #
 sudo groupadd docker
 
