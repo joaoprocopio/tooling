@@ -33,3 +33,8 @@ echo "[user]
 [core]
   excludesfile = /home/$USER/.gitignore
   editor = code --wait" | tee ~/.gitconfig >/dev/null
+
+#
+if [ -n "$WORK_EMAIL" ] && [ -n "$WORK_USERNAME" ]; then
+  echo "alias clone='git clone --config user.name=\"$WORK_EMAIL\" --config user.email=\"$WORK_USERNAME\"'" | tee --append ~/.zshrc >/dev/null
+fi

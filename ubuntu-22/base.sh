@@ -18,9 +18,3 @@ alias ll='ls -lha'
 alias dk='docker'
 alias dkc='docker compose'
 alias vpn='openvpn3'" | tee --append ~/.zshrc >/dev/null
-
-#
-if [ -n "$WORK_EMAIL" ] && [ -n "$WORK_USERNAME" ]; then
-  echo "alias clone='git clone --config user.name=\"$WORK_EMAIL\" --config user.email=\"$WORK_USERNAME\"'" | tee --append ~/.zshrc >/dev/null
-fi
-
