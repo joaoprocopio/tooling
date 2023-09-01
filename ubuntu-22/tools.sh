@@ -25,7 +25,7 @@ touch ~/.gitignore
 touch ~/.gitconfig
 
 #
-echo "**/.vscode/**\n" | tee ~/.gitignore >/dev/null
+echo "**/.vscode/**" | tee ~/.gitignore >/dev/null
 
 #
 echo "[user]
