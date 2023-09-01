@@ -13,7 +13,7 @@ sudo apt update
 
 #
 sudo apt install --yes \
-  tmux htop \
+  htop \
   git tree wget curl ffmpeg net-tools \
   gimp obs-studio qbittorrent vlc \
   gnome-tweaks dconf-editor gnome-shell-extensions \
@@ -52,8 +52,3 @@ if [ -n "$WORK_EMAIL" ] && [ -n "$WORK_USERNAME" ]; then
   echo "alias clone='git clone --config user.name=\"$WORK_EMAIL\" --config user.email=\"$WORK_USERNAME\"'" | tee --append ~/.zshrc >/dev/null
 fi
 
-#
-git clone https://github.com/gpakosz/.tmux.git ~/.tmux
-ln -s -f ~/.tmux/.tmux.conf ~/.tmux.conf
-cp ~/.tmux/.tmux.conf.local ~/
-echo "set -g mouse on" | tee --append ~/.tmux.conf.local >/dev/null
