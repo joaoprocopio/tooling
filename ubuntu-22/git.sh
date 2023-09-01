@@ -1,4 +1,4 @@
-#!/bin/env sh
+#!/bin/env zsh
 
 #
 read -p "Type here your personal username: " PERSONAL_USERNAME
