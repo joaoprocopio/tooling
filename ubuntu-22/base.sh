@@ -3,11 +3,12 @@
 #
 sudo apt update
 
+# Instale na internet:
+# Chrome, Obs, Gimp, Qbittorrent e VLC
 #
 sudo apt install --yes \
   htop \
   tree wget curl ffmpeg net-tools \
-  gimp obs-studio qbittorrent vlc \
   gnome-tweaks dconf-editor gnome-shell-extensions \
   ninja-build libtool autoconf automake cmake gcc make unzip patch gettext \
   libfuse2
