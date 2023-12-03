@@ -1,4 +1,4 @@
-#!/bin/env sh
+#!/bin/env zsh
 
 #
 sudo add-apt-repository ppa:tomtomtom/yt-dlp

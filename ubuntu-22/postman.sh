@@ -1,4 +1,4 @@
-#!/bin/env sh
+#!/bin/env zsh
 
 #
 curl -fsSL https://dl.pstmn.io/download/latest/linux_64 --output postman.tar.gz

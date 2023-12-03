@@ -1,4 +1,4 @@
-#!/bin/env sh
+#!/bin/env zsh
 # DEPRECATED
 # See: https://community.openvpn.net/openvpn/wiki/OpenVPN3Linux
 
