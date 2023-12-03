@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/bin/env zsh
 
 #
 sudo apt update
