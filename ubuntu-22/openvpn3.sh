@@ -1,10 +1,12 @@
 #!/bin/env sh
+# DEPRECATED
+# See: https://community.openvpn.net/openvpn/wiki/OpenVPN3Linux
 
 #
 sudo apt update
 
 #
-sudo apt install apt-transport-https
+sudo apt install --yes apt-transport-https curl
 
 #
 curl -fsSL https://swupdate.openvpn.net/repos/openvpn-repo-pkg-key.pub |
