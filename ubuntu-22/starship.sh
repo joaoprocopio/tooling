@@ -1,4 +1,4 @@
-#!/bin/env zsh
+#!/bin/env sh
 
 #
 curl -sS https://starship.rs/install.sh | sh

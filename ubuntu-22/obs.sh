@@ -1,4 +1,4 @@
-#!/bin/env zsh
+#!/bin/env sh
 
 #
 sudo add-apt-repository --yes ppa:obsproject/obs-studio
