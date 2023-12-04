@@ -1,6 +1,7 @@
 #!/bin/env zsh
 
 #
-# sudo add-apt-repository ppa:tomtomtom/yt-dlp
-# sudo apt update
-# sudo apt install --yes yt-dlp
+python3 -m pip install -U yt-dlp
+
+#
+source ~/.zshrc
