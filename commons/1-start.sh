@@ -1,10 +1,17 @@
 #!/bin/env zsh
 
+: '
+  https://www.google.com/chrome
+  https://code.visualstudio.com/download
+  https://www.videolan.org/vlc
+  https://www.qbittorrent.org/download
+  https://calibre-ebook.com/download
+  '
+
 #
 sudo apt update
 
-# Instale na internet:
-# Chrome, Obs, Gimp, Qbittorrent e VLC
+#
 sudo apt install --yes \
   htop \
   tree wget curl ffmpeg net-tools \
