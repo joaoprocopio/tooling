@@ -1,4 +1,4 @@
-#!/bin/env sh
+#!/bin/env zsh
 
 #
 sudo apt install --yes unzip curl
