@@ -23,9 +23,3 @@ sudo apt install --yes \
   libxmlsec1-dev libffi-dev liblzma-dev \
   libgdal-dev libpq-dev libldap2-dev libsasl2-dev \
   libasound2-dev libfontconfig-dev libwayland-dev libxkbcommon-x11-dev libzstd-dev
-
-#
-echo "\n# aliases
-alias dk='docker'
-alias dkc='docker compose'
-alias vpn='openvpn3'" | tee --append ~/.zshrc >/dev/null
