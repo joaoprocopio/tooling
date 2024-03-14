@@ -1,4 +1,4 @@
-#!/bin/env zsh
+#!/bin/env bash
 
 echo '
   https://www.google.com/chrome

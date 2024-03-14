@@ -1,4 +1,4 @@
-#!/bin/env zsh
+#!/bin/env bash
 
 #
 git clone -b stable --depth 1 https://github.com/neovim/neovim ~/neovim
