@@ -1,7 +1,6 @@
 #!/bin/env zsh
 
 #
-python3 -m pip install -U yt-dlp
+curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o ~/.local/bin/yt-dlp
+chmod a+rx ~/.local/bin/yt-dlp
 
-#
-source ~/.zshrc
