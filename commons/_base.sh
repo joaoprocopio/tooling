@@ -1,11 +1,12 @@
 #!/bin/env zsh
 
-: '
+echo '
   https://www.google.com/chrome
   https://code.visualstudio.com/download
   https://www.videolan.org/vlc
   https://www.qbittorrent.org/download
   https://calibre-ebook.com/download
+  https://bitwarden.com/download/
   '
 
 #
