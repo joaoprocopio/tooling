@@ -1,10 +1,11 @@
 #!/bin/env bash
 
 #
-sudo apt update
-
-#
-sudo apt install --yes tmux
+git clone -b '3.4' --depth 1 'git@github.com:tmux/tmux.git' ~/tmux
+cd ~/tmux
+sh autogen.sh
+./configure
+make && sudo make install
 
 #
 git clone https://github.com/gpakosz/.tmux.git ~/.tmux
