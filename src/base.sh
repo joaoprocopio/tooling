@@ -6,7 +6,8 @@ https://code.visualstudio.com/download
 https://www.videolan.org/vlc
 https://www.qbittorrent.org/download
 https://calibre-ebook.com/download
-https://bitwarden.com/download/"
+https://bitwarden.com/download/
+https://zoom.us/download"
 
 #
 sudo apt update
