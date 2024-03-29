@@ -1,5 +1,11 @@
 #!/bin/env bash
 
+: "
+  gostaria de não ter que builda o neovim do source,
+  mas infelizmente tem algumas libs tipo lazynvim 
+  que só funcionam no neovim mais recente
+"
+
 #
 git clone -b stable --depth 1 https://github.com/neovim/neovim ~/neovim
 cd ~/neovim
