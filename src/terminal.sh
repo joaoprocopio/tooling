@@ -13,7 +13,8 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
 curl -sS https://starship.rs/install.sh | sh
 
 #
-echo '\n# starship
+echo '
+# starship
 eval "$(starship init zsh)"' | tee --append ~/.zshrc >/dev/null
 
 #

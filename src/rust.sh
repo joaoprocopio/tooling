@@ -4,5 +4,6 @@
 curl https://sh.rustup.rs -sSf | sh
 
 #
-echo '\n# rust
+echo '
+# rust
 . "$HOME/.cargo/env"' | tee --append ~/.zshrc >/dev/null
