@@ -1,20 +1,17 @@
 #!/bin/env bash
 
 echo \
-"https://www.google.com/chrome
-https://code.visualstudio.com/download
-https://www.videolan.org/vlc
-https://www.qbittorrent.org/download
-https://calibre-ebook.com/download
+"
 https://bitwarden.com/download/
-https://zoom.us/download"
+https://zoom.us/download
+"
 
 #
 sudo apt update
 
 #
 sudo apt install --yes \
-  htop gimp \
+  htop gimp qbittorrent vlc calibre \
   tree wget curl ffmpeg net-tools \
   gnome-tweaks dconf-editor gnome-shell-extensions \
   ninja-build build-essential libtool autoconf automake cmake gcc make unzip patch gettext \
