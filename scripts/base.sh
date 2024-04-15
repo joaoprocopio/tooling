@@ -10,7 +10,7 @@ sudo apt update
 
 #
 sudo apt install --yes \
-  htop gimp qbittorrent vlc calibre \
+  htop neovim tmux gimp qbittorrent vlc calibre \
   tree wget curl ffmpeg net-tools \
   gnome-tweaks dconf-editor gnome-shell-extensions \
   ninja-build build-essential libtool autoconf automake cmake gcc make unzip patch gettext \
