@@ -1,3 +1,3 @@
 # tooling
 
-Setup-scripts para o Debian.
+scripts e snippets para o debian
