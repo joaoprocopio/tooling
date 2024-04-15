@@ -2,7 +2,6 @@
 
 echo \
 "
-https://bitwarden.com/download/
 https://zoom.us/download
 "
 
