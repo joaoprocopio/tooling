@@ -19,7 +19,7 @@ echo "[user]
   email = joaovitorcprocopio@gmail.com
 [alias]
   st = status
-  lg = log --graph --decorate --abbrev-commit --all --pretty=format:'%C(auto)%h%Creset %C(cyan)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
+  lg = log --graph --decorate --abbrev-commit --all
 [init]
   defaultBranch = main
 [core]
