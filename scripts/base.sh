@@ -8,11 +8,22 @@ https://zoom.us/download
 #
 sudo apt update
 
+
+# terminal tools
+sudo apt install --yes \
+  htop neovim tmux
+
+# gui tools
+sudo apt install --yes \
+  gimp qbittorrent vlc calibre
+
+# gnome tools
+sudo apt install --yes \
+  gnome-tweaks dconf-editor gnome-shell-extensions
+
 #
 sudo apt install --yes \
-  htop neovim tmux gimp qbittorrent vlc calibre \
   tree wget curl ffmpeg net-tools \
-  gnome-tweaks dconf-editor gnome-shell-extensions \
   ninja-build build-essential libtool autoconf automake cmake gcc make unzip patch gettext \
   fonts-jetbrains-mono \
   libfuse2 libssl-dev zlib1g-dev \
