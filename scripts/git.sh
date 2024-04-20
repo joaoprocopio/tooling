@@ -24,6 +24,5 @@ echo "[user]
   defaultBranch = main
 [core]
   excludesfile = /home/$USER/.gitignore
-  editor = code --wait
 [push]
   autoSetupRemote = true" | tee ~/.gitconfig >/dev/null
