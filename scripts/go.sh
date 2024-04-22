@@ -18,4 +18,5 @@ rm go.tar.gz
 #
 echo '
 # go
-export PATH="$PATH:/usr/local/go/bin"' | tee --append ~/.zshrc >/dev/null
+export PATH="$PATH:/usr/local/go/bin"
+export PATH="$PATH:$HOME/go/bin"' | tee --append ~/.zshrc >/dev/null
