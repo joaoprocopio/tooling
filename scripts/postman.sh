@@ -1,7 +1,7 @@
 #!/bin/env bash
 
 #
-curl -fsSL https://dl.pstmn.io/download/latest/linux_64 --output postman.tar.gz
+curl -fsSL 'https://dl.pstmn.io/download/latest/linux_64' -o 'postman.tar.gz'
 
 #
 tar xzf postman.tar.gz
