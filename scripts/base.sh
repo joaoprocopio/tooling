@@ -17,7 +17,7 @@ sudo apt install --yes \
 sudo apt install --yes \
   tree wget curl ffmpeg net-tools ninja-build build-essential \
   libtool autoconf automake cmake gcc make unzip patch gettext \
-  bison byacc pkg-config
+  bison byacc pkg-config libgraph-easy-perl # graph-easy, very useful
 
 # gui tools
 sudo apt install --yes \
