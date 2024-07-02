@@ -1,5 +1,7 @@
 #!/bin/env bash
 
+GO_VERSION="1.22.4"
+
 #
 sudo apt-get update
 
@@ -7,7 +9,7 @@ sudo apt-get update
 sudo rm -rf /usr/local/go
 
 #
-curl -fsSL https://go.dev/dl/go1.22.2.linux-amd64.tar.gz -o go.tar.gz
+curl -fsSL "https://go.dev/dl/go$GO_VERSION.linux-amd64.tar.gz" -o go.tar.gz
 
 #
 sudo tar -C /usr/local -xf go.tar.gz
