@@ -39,4 +39,4 @@ sudo apt install --yes \
   ncurses-dev libgdal-dev libpq-dev libldap2-dev libsasl2-dev \
   libasound2-dev libfontconfig-dev libwayland-dev libxkbcommon-x11-dev \
   libzstd-dev libvulkan1 libevent-dev \
-  libflac-dev
+  libflac-dev libsdl2-dev
