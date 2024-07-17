@@ -1,10 +1,5 @@
 #!/bin/env bash
 
-echo \
-"
-https://zoom.us/download
-"
-
 #
 sudo apt update
 
