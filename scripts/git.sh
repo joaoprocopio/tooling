@@ -11,7 +11,9 @@ touch ~/.gitignore
 touch ~/.gitconfig
 
 #
-echo "**/.vscode/**" | tee ~/.gitignore >/dev/null
+echo \
+"**/.vscode/**
+**/.zed/**" | tee ~/.gitignore >/dev/null
 
 #
 echo "[user]
