@@ -1,6 +1,6 @@
 #!/bin/env bash
 
-GO_VERSION="1.22.4"
+GO_VERSION="1.23.1"
 
 #
 sudo apt-get update
