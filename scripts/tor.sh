@@ -10,7 +10,8 @@ tar -xvf tor-browser.tar.xz
 sudo mv tor-browser /opt/
 
 #
-/opt/tor-broser/start-tor-browser.desktop --register-app
+cd /opt/tor-browser
+./start-tor-browser.desktop --register-app
 
 #
 rm tor-browser.tar.xz
