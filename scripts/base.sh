@@ -10,7 +10,7 @@ sudo apt install --yes \
 
 # terminal cli tools
 sudo apt install --yes \
-  tree wget curl ffmpeg net-tools ninja-build build-essential \
+  rsync tree wget curl ffmpeg net-tools ninja-build build-essential \
   libtool autoconf automake cmake gcc make unzip p7zip-full patch gettext \
   bison re2c byacc pkg-config libgraph-easy-perl # graph-easy, very useful
 
