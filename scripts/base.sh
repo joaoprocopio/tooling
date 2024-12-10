@@ -16,7 +16,7 @@ sudo apt install --yes \
 
 # gui tools
 sudo apt install --yes \
-  gimp qbittorrent vlc calibre simple-scan
+  gimp qbittorrent vlc calibre simple-scan flameshot
 
 # gnome tools
 sudo apt install --yes \
