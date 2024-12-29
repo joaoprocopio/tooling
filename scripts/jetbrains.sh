@@ -13,3 +13,12 @@ curl -fsSL "https://download.jetbrains.com/toolbox/$TOOLBOX_FILENAME" -o "$TOOLB
 
 #
 tar -xvf "$TOOLBOX_FILENAME"
+rm "$TOOLBOX_FILENAME"
+
+#
+cd "$TOOLBOX_DIRNAME"
+sudo mv jetbrains-toolbox /usr/bin
+
+#
+cd ..
+rm -rf "$TOOLBOX_DIRNAME"
