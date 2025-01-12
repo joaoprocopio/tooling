@@ -17,11 +17,11 @@ ANDROID_STUDIO_DOWNLOAD_URL="https://redirector.gvt1.com/edgedl/android/studio/i
 
 curl -#fSL $ANDROID_STUDIO_DOWNLOAD_URL -o $ANDROID_STUDIO_FILENAME
 
-# extract and move
+## extract and move
 tar -xvf $ANDROID_STUDIO_FILENAME
 sudo mv android-studio /opt/
 
-#
+## execute the install wizard, follow it step by step, when the editor opens go to: Tools > Create Desktop Entry. after this you close it.
 /opt/android-studio/bin/studio.sh
 
 # sdk&jdk
