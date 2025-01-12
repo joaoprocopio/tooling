@@ -17,4 +17,8 @@ ANDROID_STUDIO_DOWNLOAD_URL="https://redirector.gvt1.com/edgedl/android/studio/i
 
 curl -#fSL $ANDROID_STUDIO_DOWNLOAD_URL -o $ANDROID_STUDIO_FILENAME
 
+#
+tar -xvf $ANDROID_STUDIO_FILENAME
+sudo mv android-studio /opt/
+
 # sdk&jdk
