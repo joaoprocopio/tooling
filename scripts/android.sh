@@ -2,7 +2,7 @@
 
 # studio
 # get the release name from the website
-MOST_RECENT_RELEASE_YEAR=$(
+MOST_RECENT_ANDROID_STUDIO_RELEASE=$(
   curl -s https://developer.android.com/studio | \
   # find the linux 64 bit td html element, and catch the next 5 following lines
   grep -A 5 'Linux<br>(64-bit)' | \
@@ -12,8 +12,11 @@ MOST_RECENT_RELEASE_YEAR=$(
   sed 's/android-studio-\([0-9.]\+\)-linux/\1/'
 )
 
-DOWNLOAD_URL="https://redirector.gvt1.com/edgedl/android/studio/ide-zips/$MOST_RECENT_RELEASE_YEAR/android-studio-$MOST_RECENT_RELEASE_YEAR-linux.tar.gz"
+ANDROID_STUDIO_FILENAME="android-studio-$MOST_RECENT_ANDROID_STUDIO_RELEASE-linux.tar.gz"
+ANDROID_STUDIO_DOWNLOAD_URL="https://redirector.gvt1.com/edgedl/android/studio/ide-zips/$MOST_RECENT_ANDROID_STUDIO_RELEASE/$ANDROID_STUDIO_FILENAME"
 
-echo $DOWNLOAD_URL
+echo $ANDROID_STUDIO_DOWNLOAD_URL
+
+curl --progress-bar -fSL $ANDROID_STUDIO_DOWNLOAD_URL -o $ANDROID_STUDIO_FILENAME
 
 # sdk&jdk
