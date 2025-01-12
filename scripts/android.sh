@@ -38,5 +38,3 @@ Terminal=false
 StartupWMClass=jetbrains-studio
 StartupNotify=true
 ' | tee ~/.local/share/applications/jetbrains-studio.desktop >/dev/null
-
-# sdk&jdk

@@ -12,7 +12,8 @@ touch ~/.gitconfig
 
 #
 echo \
-"**/.vscode/**
+"**/.idea/**
+**/.vscode/**
 **/.zed/**" | tee ~/.gitignore >/dev/null
 
 #
