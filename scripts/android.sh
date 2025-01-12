@@ -21,7 +21,7 @@ curl -#fSL $ANDROID_STUDIO_DOWNLOAD_URL -o $ANDROID_STUDIO_FILENAME
 tar -xvf $ANDROID_STUDIO_FILENAME
 sudo mv android-studio /opt/
 
-## execute the install wizard, follow it step by step, when the editor opens go to: Tools > Create Desktop Entry. after this you close it.
+## execute the install wizard, follow it step by step
 /opt/android-studio/bin/studio.sh
 
 # sdk&jdk
