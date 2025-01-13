@@ -1,28 +1,20 @@
 #!/bin/env bash
 
-# jdk, this should be updated manually
-TEMURIM_JDK_RELEASE="jdk-17.0.13%2B11"
-TEMURIM_JDK_FILENAME="OpenJDK17U-jdk_x64_linux_hotspot_17.0.13_11.tar.gz"
-TEMURIM_JDK_DOWNLOAD_URL="https://github.com/adoptium/temurin17-binaries/releases/download/$TEMURIM_JDK_RELEASE/$TEMURIM_JDK_FILENAME"
+# jdk
+sudo apt install -y wget apt-transport-https gpg
 
 #
-curl -#fSL $TEMURIM_JDK_DOWNLOAD_URL -o $TEMURIM_JDK_FILENAME
+wget -qO - https://packages.adoptium.net/artifactory/api/gpg/key/public | \
+  gpg --dearmor | \
+  sudo tee /etc/apt/trusted.gpg.d/adoptium.gpg > /dev/null
 
 #
-JDK_DIRNAME="jdk"
-mkdir -p $JDK_DIRNAME
-tar -xvf $TEMURIM_JDK_FILENAME --strip-components 1 -C $JDK_DIRNAME
-rm $TEMURIM_JDK_FILENAME
+echo "deb https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION_CODENAME/{print$2}' /etc/os-release) main" | \
+  sudo tee /etc/apt/sources.list.d/adoptium.list > /dev/null
 
 #
-mv jdk ~/jdk
-
-#
-echo '
-# temurim jdk
-export JAVA_HOME="$HOME/jdk"
-export PATH="$PATH:$JAVA_HOME/bin"' | tee --append ~/.zshrc >/dev/null
-
+sudo apt update
+sudo apt install temurin-17-jdk
 
 # studio
 ## get the release name from the website
