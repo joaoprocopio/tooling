@@ -12,6 +12,7 @@ curl -#fSL $TEMURIM_JDK_DOWNLOAD_URL -o $TEMURIM_JDK_FILENAME
 JDK_DIRNAME="jdk"
 mkdir -p $JDK_DIRNAME
 tar -xvf $TEMURIM_JDK_FILENAME --strip-components 1 -C $JDK_DIRNAME
+rm $TEMURIM_JDK_FILENAME
 
 #
 mv jdk ~/jdk
