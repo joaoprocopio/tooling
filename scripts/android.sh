@@ -1,5 +1,27 @@
 #!/bin/env bash
 
+# jdk, this should be updated manually
+TEMURIM_JDK_RELEASE="jdk-17.0.13%2B11"
+TEMURIM_JDK_FILENAME="OpenJDK17U-jdk_x64_linux_hotspot_17.0.13_11.tar.gz"
+TEMURIM_JDK_DOWNLOAD_URL="https://github.com/adoptium/temurin17-binaries/releases/download/$TEMURIM_JDK_RELEASE/$TEMURIM_JDK_FILENAME"
+
+#
+curl -#fSL $TEMURIM_JDK_DOWNLOAD_URL -o $TEMURIM_JDK_FILENAME
+
+#
+JDK_DIRNAME="jdk"
+mkdir -p $JDK_DIRNAME
+tar -xvf $TEMURIM_JDK_FILENAME --strip-components 1 -C $JDK_DIRNAME
+
+#
+mv jdk ~/jdk
+
+#
+echo '
+# temurim jdk
+export PATH="$PATH:$HOME/jdk/bin"' | tee --append ~/.zshrc >/dev/null
+
+
 # studio
 ## get the release name from the website
 MOST_RECENT_ANDROID_STUDIO_RELEASE=$(
