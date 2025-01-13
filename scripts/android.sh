@@ -19,8 +19,7 @@ sudo apt install temurin-17-jdk
 #
 echo '
 # temurim jdk
-export JAVA_HOME="/usr/lib/jvm/temurin-17-jdk-amd64"
-' | tee --append ~/.zshrc >/dev/null
+export JAVA_HOME="/usr/lib/jvm/temurin-17-jdk-amd64"' | tee --append ~/.zshrc >/dev/null
 
 # studio
 ## get the release name from the website
@@ -66,5 +65,6 @@ StartupNotify=true
 ##
 echo '
 # android studio
+export ANDROID_HOME="$HOME/Android/Sdk"
 export PATH="$PATH:/opt/android-studio/bin"
-export PATH="$PATH:$HOME/Android/Sdk/cmdline-tools/latest/bin"' | tee --append ~/.zshrc >/dev/null
+export PATH="$PATH:$ANDROID_HOME/cmdline-tools/latest/bin"' | tee --append ~/.zshrc >/dev/null
