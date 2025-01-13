@@ -16,6 +16,12 @@ echo "deb https://packages.adoptium.net/artifactory/deb $(lsb_release -cs) main"
 sudo apt update
 sudo apt install temurin-17-jdk
 
+#
+echo '
+# temurim jdk
+export JAVA_HOME="/usr/lib/jvm/temurin-17-jdk-amd64"
+' | tee --append ~/.zshrc >/dev/null
+
 # studio
 ## get the release name from the website
 MOST_RECENT_ANDROID_STUDIO_RELEASE=$(
