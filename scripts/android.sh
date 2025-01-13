@@ -20,7 +20,8 @@ mv jdk ~/jdk
 #
 echo '
 # temurim jdk
-export PATH="$PATH:$HOME/jdk/bin"' | tee --append ~/.zshrc >/dev/null
+export JAVA_HOME="$HOME/jdk"
+export PATH="$PATH:$JAVA_HOME/bin"' | tee --append ~/.zshrc >/dev/null
 
 
 # studio
