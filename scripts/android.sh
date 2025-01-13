@@ -41,7 +41,7 @@ StartupNotify=true
 ## close the opened studio and open from the desktop entry
 ## go to: Tools > SDK Manager > SDK Tools > Click on Android SDK Command-line Tools (latest) > Apply > Ok > Wait and finish
 
-#
+##
 echo '
 # android studio
 export PATH="$PATH:/opt/android-studio/bin"
