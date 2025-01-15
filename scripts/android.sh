@@ -66,5 +66,7 @@ StartupNotify=true
 echo '
 # android studio
 export ANDROID_HOME="$HOME/Android/Sdk"
-export PATH="$PATH:/opt/android-studio/bin"
-export PATH="$PATH:$ANDROID_HOME/cmdline-tools/latest/bin"' | tee --append ~/.zshrc >/dev/null
+export PATH="$PATH:$ANDROID_HOME/cmdline-tools/latest/bin"
+export PATH="$PATH:$ANDROID_HOME/emulator"
+export PATH="$PATH:$ANDROID_HOME/platform-tools"
+export PATH="$PATH:/opt/android-studio/bin"' | tee --append ~/.zshrc >/dev/null
