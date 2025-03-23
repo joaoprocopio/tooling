@@ -1,7 +1,7 @@
 #!/bin/env bash
 
 #
-git clone -b '3.4' --depth 1 'git@github.com:tmux/tmux.git' ~/tmux
+git clone -b '3.5' --depth 1 'git@github.com:tmux/tmux.git' ~/tmux
 cd ~/tmux
 sh autogen.sh
 ./configure
