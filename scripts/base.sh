@@ -3,7 +3,6 @@
 #
 sudo apt update
 
-
 # terminal interface tools
 sudo apt install --yes \
   htop
@@ -17,12 +16,6 @@ sudo apt install --yes \
 # gui tools
 sudo apt install --yes \
   gimp qbittorrent vlc calibre simple-scan flameshot
-
-# gnome/conf tools
-# TODO: automar a parte de configurar o gnome-tweaks e as extensions
-sudo apt install --yes \
-  dconf-editor gnome-tweaks gnome-shell-extensions gnome-shell-extension-appindicator
-# NOTA: sobre o appindicator precisa ativar dentro do app de extensões
 
 # fonts
 sudo apt install --yes \
