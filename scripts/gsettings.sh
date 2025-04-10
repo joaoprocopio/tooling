@@ -1,8 +1,11 @@
 #!/bin/env bash
 
-# Keybindings
-# TODO: fazer funcionar o alt + tab normalmente
+# Switch Windows com ALT + TAB
+gsettings set org.gnome.desktop.wm.keybindings switch-applications "[]"
+gsettings set org.gnome.desktop.wm.keybindings switch-applications-backward "[]"
+gsettings set org.gnome.desktop.wm.keybindings switch-windows "['<Alt>Tab']"
 
+# Custom Keybindings
 # List Keybindings
 gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/']"
 
