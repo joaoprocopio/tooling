@@ -1,7 +1,7 @@
 #!/bin/env bash
 
 #
-curl -fsSL 'https://www.torproject.org/dist/torbrowser/14.0.1/tor-browser-linux-x86_64-14.0.1.tar.xz' -o 'tor-browser.tar.xz'
+curl -#fSL 'https://www.torproject.org/dist/torbrowser/14.5.3/tor-browser-linux-x86_64-14.5.3.tar.xz' -o 'tor-browser.tar.xz'
 
 #
 tar -xvf tor-browser.tar.xz
