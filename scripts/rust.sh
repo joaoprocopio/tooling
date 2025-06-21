@@ -9,7 +9,7 @@ echo '
 . "$HOME/.cargo/env"' | tee --append ~/.zshrc >/dev/null
 
 #
-source ~/.zshrc
+. "$HOME/.cargo/env"
 
 #
 rustup update
