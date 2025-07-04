@@ -1,23 +1,24 @@
 #!/bin/env bash
 
-#
-ZIG_VERSION='0.14.1'
-ZIG_ARCHITECTURE='x86_64-linux'
+# https://ziglang.org/download/index.json
 
 #
-ZIG_TARBALL_URL=$(curl -fsSL https://ziglang.org/download/index.json | jq -r ".\"$ZIG_VERSION\".\"$ZIG_ARCHITECTURE\".tarball")
+ZIG_VERSION="0.13.0"
+ZIG_ARCHITECTURE="linux-x86_64"
+ZIG_DIRNAME="zig-$ZIG_ARCHITECTURE-$ZIG_VERSION"
+ZIG_TARBALL="$ZIG_DIRNAME.tar.xz"
+ZIG_TARBALL_URL="https://ziglang.org/download/$ZIG_VERSION/$ZIG_TARBALL"
 
 #
-curl -#fSL $ZIG_TARBALL_URL -o zig.tar.xz
-tar -xvf zig.tar.xz
-rm zig.tar.xz
+curl "$ZIG_TARBALL_URL" -o "$ZIG_TARBALL"
+tar -xvf "$ZIG_TARBALL"
+rm "$ZIG_TARBALL"
 
 #
-mv "zig-$ZIG_ARCHITECTURE-$ZIG_VERSION" ~/zig
+mv "$ZIG_DIRNAME" ~/zig
 
 #
-echo '
-# zig
-export PATH=$PATH:~/zig
-' | tee --append ~/.zshrc >/dev/null
-
+# echo '
+# # zig
+# export PATH=$PATH:~/zig
+# ' | tee --append ~/.zshrc >/dev/null
