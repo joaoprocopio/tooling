@@ -17,11 +17,6 @@ sudo apt install --yes \
 sudo apt install --yes \
   gimp qbittorrent vlc calibre simple-scan flameshot
 
-# fonts
-sudo apt install --yes \
-  fonts-jetbrains-mono
-
-
 # libraries
 sudo apt install --yes \
   libfuse2 libssl-dev zlib1g-dev libbz2-dev libreadline-dev \
