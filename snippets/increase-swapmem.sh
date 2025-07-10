@@ -16,5 +16,6 @@ sudo swapon -s
 #
 sudo cp /etc/fstab /etc/fstab.bak
 
-# add to `/etc/fstab`
-# UUID=abf9a9b8-d717-4e42-9000-2e01935100cc /swapfile swap swap defaults 0 0
+#
+echo '/swapfile swap swap defaults 0 0' | \
+  sudo tee --append /etc/fstab >/dev/null
