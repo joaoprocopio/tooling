@@ -1,13 +1,10 @@
 #!/bin/env bash
 
 #
-sudo apt-get update
-
-#
 sudo rm -rf /usr/local/go
 
 #
-curl -fsSL "https://go.dev/dl/go1.24.4.linux-amd64.tar.gz" -o go.tar.gz
+curl -fsSL "https://go.dev/dl/go1.24.5.linux-amd64.tar.gz" -o go.tar.gz
 
 #
 sudo tar -C /usr/local -xf go.tar.gz
