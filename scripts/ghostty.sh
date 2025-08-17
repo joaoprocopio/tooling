@@ -26,9 +26,4 @@ zig build -p "$HOME/.local" -Doptimize=ReleaseFast
 cd ~
 rm -rf ~/ghostty
 rm -rf ~/zig
-
-#
-echo '
-# ghostty
-export PATH="$HOME/.local/bin:$PATH"
-' | tee --append ~/.zshrc >/dev/null
+sudo mv ~/.local/bin/ghostty /usr/local/bin/
