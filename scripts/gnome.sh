@@ -1,14 +1,5 @@
 #!/bin/env bash
 
-# fonts
-sudo apt install --yes \
-  fonts-jetbrains-mono \
-  fonts-noto \
-  fonts-inter \
-  fonts-go \
-  fonts-lato \
-  fonts-ubuntu
-
 # TODO: automar a parte de configurar o gnome-tweaks e as extensions
 # TODO: NOTA: sobre o appindicator precisa ativar dentro do app de extensões
 # TODO: NOTA: precisa ativar o user themes, pra dentro do gnome tweaks trocar o Appearance > Legacy Applications > Adwaita-dark
