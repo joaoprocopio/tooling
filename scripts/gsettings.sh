@@ -21,9 +21,9 @@ gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/or
 gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ name "Take Screenshot"
 
 # Pitch Black Background
-gsettings set org.gnome.desktop.background picture-options 'none'
-gsettings set org.gnome.desktop.background color-shading-type 'solid'
-gsettings set org.gnome.desktop.background primary-color '#000000'
-gsettings set org.gnome.desktop.background secondary-color '#000000'
-gsettings set org.gnome.desktop.background picture-uri ''
-gsettings set org.gnome.desktop.background picture-uri-dark ''
+# gsettings set org.gnome.desktop.background picture-options 'none'
+# gsettings set org.gnome.desktop.background color-shading-type 'solid'
+# gsettings set org.gnome.desktop.background primary-color '#000000'
+# gsettings set org.gnome.desktop.background secondary-color '#000000'
+# gsettings set org.gnome.desktop.background picture-uri ''
+# gsettings set org.gnome.desktop.background picture-uri-dark ''
