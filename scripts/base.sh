@@ -26,4 +26,4 @@ sudo apt install --yes \
   libasound2-dev libfontconfig-dev libwayland-dev libxkbcommon-x11-dev \
   libzstd-dev libvulkan1 libevent-dev \
   libflac-dev libsdl2-dev \
-  install libgtk-4-dev libadwaita-1-dev
+  libgtk-4-dev libadwaita-1-dev libgtk4-layer-shell-dev
