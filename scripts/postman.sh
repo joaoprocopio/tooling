@@ -1,7 +1,7 @@
 #!/bin/env bash
 
 #
-curl -fsSL 'https://dl.pstmn.io/download/latest/linux_64' -o 'postman.tar.gz'
+curl -#fSL 'https://dl.pstmn.io/download/latest/linux_64' -o 'postman.tar.gz'
 
 #
 tar xzf postman.tar.gz
@@ -22,3 +22,4 @@ Version=1.0" | tee ~/.local/share/applications/Postman.desktop >/dev/null
 
 #
 rm postman.tar.gz
+
