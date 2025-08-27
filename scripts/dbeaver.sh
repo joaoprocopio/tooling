@@ -4,7 +4,7 @@
 sudo apt-get install --yes curl
 
 #
-curl -fsSL 'https://dbeaver.io/files/dbeaver-ce_latest_amd64.deb' -o 'dbeaver.deb'
+curl -#fSL 'https://dbeaver.io/files/dbeaver-ce_latest_amd64.deb' -o 'dbeaver.deb'
 
 #
 sudo dpkg -i dbeaver.deb

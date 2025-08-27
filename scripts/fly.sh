@@ -1,7 +1,7 @@
 #!/bin/env bash
 
 #
-curl -fsSL https://fly.io/install.sh | sh
+curl -#fSL https://fly.io/install.sh | sh
 
 #
 echo '

@@ -7,7 +7,7 @@ sudo apt update
 sudo apt install --yes git zsh curl
 
 #
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+sh -c "$(curl -#fSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
 #
 curl -sS https://starship.rs/install.sh | sh

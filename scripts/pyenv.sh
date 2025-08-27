@@ -4,7 +4,7 @@
 sudo apt update
 
 #
-curl -fsSL https://pyenv.run | bash
+curl -#fSL https://pyenv.run | bash
 
 #
 echo '

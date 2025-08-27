@@ -4,9 +4,9 @@
 sudo apt-get install --yes curl jq
 
 #
-curl -fsSL https://api.github.com/repos/obsidianmd/obsidian-releases/releases | \
+curl -#fSL https://api.github.com/repos/obsidianmd/obsidian-releases/releases | \
     jq '.[0].assets | map(select(.name|endswith(".deb"))) | .[0].browser_download_url' | \
-    xargs curl -fsSL -o obsidian.deb
+    xargs curl -#fSL -o obsidian.deb
 
 #
 sudo dpkg -i obsidian.deb
