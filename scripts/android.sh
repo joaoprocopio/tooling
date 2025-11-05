@@ -45,22 +45,11 @@ sudo mv android-studio /opt/
 ## execute the install wizard, follow it step by step
 /opt/android-studio/bin/studio.sh
 
-## adds the desktop entry
-echo \
-'[Desktop Entry]
-Version=1.0
-Type=Application
-Name=Android Studio
-Icon=/opt/android-studio/bin/studio.svg
-Exec="/opt/android-studio/bin/studio" %f
-Comment=The Drive to Develop
-Categories=Development;IDE;
-Terminal=false
-StartupWMClass=jetbrains-studio
-StartupNotify=true
-' | tee ~/.local/share/applications/jetbrains-studio.desktop >/dev/null
-## close the opened studio and open from the desktop entry
+## to add the desktop entry go to: Tools > Create Desktop Entry
 ## go to: Tools > SDK Manager > SDK Tools > Click on Android SDK Command-line Tools (latest) > Apply > Ok > Wait and finish
+echo '
+# android studio
+export PATH="$PATH:/opt/android-studio/bin"' | tee --append ~/.zshrc >/dev/null
 
 ##
 echo '
