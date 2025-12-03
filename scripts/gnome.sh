@@ -8,4 +8,6 @@
 # TODO: NOTA: trocar as fontes padrões
 # TODO: NOTA: setar hinting pro full
 sudo apt install --yes \
-  dconf-editor gnome-tweaks gnome-shell-extensions gnome-shell-extension-appindicator
+  dconf-editor gnome-tweaks gnome-shell-extensions \
+  gnome-shell-extension-appindicator \
+  gnome-shell-extension-dashtodock
