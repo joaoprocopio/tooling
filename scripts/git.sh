@@ -27,6 +27,6 @@ echo "[user]
   defaultBranch = main
 [core]
   excludesfile = /home/$USER/.gitignore
-  editor = nvim
+  editor = zed --wait
 [push]
   autoSetupRemote = true" | tee ~/.gitconfig >/dev/null
