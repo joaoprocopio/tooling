@@ -1,5 +1,8 @@
 #!/bin/env bash
 
+# you need to install zig in the correct version https://ghostty.org/docs/install/build
+# you need to have these dynamic libraries https://ghostty.org/docs/install/build#debian-and-ubuntu
+
 #
 sudo apt install --yes minisign
 
@@ -7,17 +10,17 @@ sudo apt install --yes minisign
 GHOSTTY_PUBLIC_KEY="RWQlAjJC23149WL2sEpT/l0QKy7hMIFhYdQOFy0Z7z7PbneUgvlsnYcV"
 GHOSTTY_VERSION="1.2.3"
 GHOSTTY_DIR="ghostty-$GHOSTTY_VERSION"
-GHOSTTY_TAR_GZ_FILE="$GHOSTTY_DIR.tar.gz"
+GHOSTTY_TARBALL_FILE="$GHOSTTY_DIR.tar.gz"
 
 #
-curl -#fSL "https://release.files.ghostty.org/$GHOSTTY_VERSION/$GHOSTTY_TAR_GZ_FILE" -o $GHOSTTY_TAR_GZ_FILE
+curl -#fSL "https://release.files.ghostty.org/$GHOSTTY_VERSION/$GHOSTTY_TARBALL_FILE" -o $GHOSTTY_TARBALL_FILE
 
 # verifies the signature
-minisign -Vm $GHOSTTY_TAR_GZ_FILE -P $GHOSTTY_PUBLIC_KEY
+minisign -Vm $GHOSTTY_TARBALL_FILE -P $GHOSTTY_PUBLIC_KEY
 
 #
-tar -xvf $GHOSTTY_TAR_GZ_FILE
-rm $GHOSTTY_TAR_GZ_FILE
+tar -xvf $GHOSTTY_TARBALL_FILE
+rm $GHOSTTY_TARBALL_FILE
 
 #
 if [ ! -d $GHOSTTY_DIR ]; then
@@ -25,8 +28,8 @@ if [ ! -d $GHOSTTY_DIR ]; then
     exit 1
 fi
 
-# zig build -p "$HOME/.local" -Doptimize=ReleaseFast
-# cd ~
-# rm -rf ~/ghostty
-# rm -rf ~/zig
-# sudo mv ~/.local/bin/ghostty /usr/local/bin/
+#
+pushd $GHOSTTY_DIR
+zig build -p "$HOME/.local" -Doptimize=ReleaseFast
+popd
+rm -rf $GHOSTTY_DIR
