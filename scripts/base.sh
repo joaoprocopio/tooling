@@ -7,6 +7,10 @@ sudo apt update
 sudo apt install --yes \
   htop
 
+# fontes
+sudo apt install --yes \
+  fonts-jetbrains-mono fonts-inter
+
 # terminal cli tools
 sudo apt install --yes \
   ssh git blueprint-compiler rsync jq tree wget curl ffmpeg net-tools ninja-build build-essential \
