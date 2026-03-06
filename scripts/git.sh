@@ -20,13 +20,10 @@ echo \
 echo "[user]
   name = joaoprocopio
   email = joaovitorcprocopio@gmail.com
-[alias]
-  st = status
-  lg = log --graph --decorate --abbrev-commit --all
 [init]
   defaultBranch = main
 [core]
   excludesfile = /home/$USER/.gitignore
-  editor = zed --wait
+  editor = code --wait
 [push]
   autoSetupRemote = true" | tee ~/.gitconfig >/dev/null
