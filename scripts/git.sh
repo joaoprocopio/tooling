@@ -25,5 +25,6 @@ echo "[user]
 [core]
   excludesfile = /home/$USER/.gitignore
   editor = code --wait
+  autocrlf = false
 [push]
   autoSetupRemote = true" | tee ~/.gitconfig >/dev/null
