@@ -9,5 +9,4 @@
 # TODO: NOTA: setar hinting pro full
 sudo apt install --yes \
   dconf-editor gnome-tweaks gnome-shell-extensions \
-  gnome-shell-extension-appindicator \
-  gnome-shell-extension-dashtodock
+  gnome-shell-extension-appindicator
