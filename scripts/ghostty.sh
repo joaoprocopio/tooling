@@ -8,7 +8,7 @@ sudo apt install --yes minisign
 
 # all variables are prefixed to prevent namespace clashing
 GHOSTTY_PUBLIC_KEY="RWQlAjJC23149WL2sEpT/l0QKy7hMIFhYdQOFy0Z7z7PbneUgvlsnYcV"
-GHOSTTY_VERSION="1.2.3"
+GHOSTTY_VERSION="1.3.1"
 GHOSTTY_DIR="ghostty-$GHOSTTY_VERSION"
 GHOSTTY_TARBALL_FILE="$GHOSTTY_DIR.tar.gz"
 
