@@ -32,4 +32,5 @@ sudo apt install --yes \
   libzstd-dev libvulkan1 libevent-dev \
   libflac-dev libsdl2-dev \
   libgtk-4-dev libadwaita-1-dev libgtk4-layer-shell-dev \
-  libapr1-dev libaprutil1-dev libglib2.0-dev libc6-dbg
+  libapr1-dev libaprutil1-dev libglib2.0-dev libc6-dbg \
+  libsoup-3.0-dev
