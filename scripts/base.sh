@@ -33,4 +33,4 @@ sudo apt install --yes \
   libflac-dev libsdl2-dev \
   libgtk-4-dev libadwaita-1-dev libgtk4-layer-shell-dev \
   libapr1-dev libaprutil1-dev libglib2.0-dev libc6-dbg \
-  libsoup-3.0-dev
+  libsoup-3.0-dev libjavascriptcoregtk-4.1-dev libwebkit2gtk-4.1-dev
