@@ -16,7 +16,7 @@ sudo apt install --yes \
   ssh git blueprint-compiler rsync jq tree wget ripgrep curl ffmpeg net-tools ninja-build build-essential mesa-utils \
   libtool autoconf automake cmake gcc make unzip p7zip-full patch gettext \
   bison re2c byacc pkg-config libgraph-easy-perl tree-sitter-cli \
-  xsel wl-clipboard linux-perf valgrind gnupg2
+  xsel wl-clipboard linux-perf valgrind gnupg2 g++
 
 # gui tools
 sudo apt install --yes \
@@ -33,4 +33,5 @@ sudo apt install --yes \
   libflac-dev libsdl2-dev \
   libgtk-4-dev libadwaita-1-dev libgtk4-layer-shell-dev \
   libapr1-dev libaprutil1-dev libglib2.0-dev libc6-dbg \
-  libsoup-3.0-dev libjavascriptcoregtk-4.1-dev libwebkit2gtk-4.1-dev
+  libsoup-3.0-dev libjavascriptcoregtk-4.1-dev libwebkit2gtk-4.1-dev \
+  libx11-dev libudev-dev libxkbcommon-x11-0
