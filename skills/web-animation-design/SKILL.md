@@ -1,5 +1,5 @@
 ---
-name: emil-web-animation-design
+name: web-animation-design
 description: >
   Design and implement web animations that feel natural and purposeful. Use this skill proactively whenever the user asks questions about animations, motion, easing, timing, duration, springs, transitions, or animation performance. This includes questions about how to animate specific UI elements, which easing to use, animation best practices, or accessibility considerations for motion. Triggers on: easing, ease-out, ease-in, ease-in-out, cubic-bezier, bounce, spring physics, keyframes, transform, opacity, fade, slide, scale, hover effects, microinteractions, Framer Motion, React Spring, GSAP, CSS transitions, entrance/exit animations, page transitions, stagger, will-change, GPU acceleration, prefers-reduced-motion, modal/dropdown/tooltip/popover/drawer animations, gesture animations, drag interactions, button press feel, "feels janky", "make it smooth".
 ---
@@ -116,30 +116,26 @@ Elements that animate together must use the same easing and duration. Modal + ov
 
 ## Timing and Duration
 
-## Duration Guidelines
+### Duration Guidelines
 
 | Element Type                      | Duration  |
 | --------------------------------- | --------- |
 | Micro-interactions                | 100-150ms |
 | Standard UI (tooltips, dropdowns) | 150-250ms |
 | Modals, drawers                   | 200-300ms |
+| Page transitions                  | 300-400ms |
 
-**Rules:**
+**Rule:** UI animations should stay under 300ms. Larger elements animate slower than smaller ones.
 
-- UI animations should stay under 300ms
-- Larger elements animate slower than smaller ones
-- Exit animations can be ~20% faster than entrance
-- Match duration to distance - longer travel = longer duration
-
-### The Frequency
+### The Frequency Principle
 
 Determine how often users will see the animation:
 
 - **100+ times/day** → No animation (or drastically reduced)
 - **Occasional use** → Standard animation
-- **Rare/first-time** → Can be more special
+- **Rare/first-time** → Can add delight
 
-**Example:** Raycast never animates because users open it hundreds of times a day.
+**Example:** Raycast never animates its menu toggle because users open it hundreds of times daily.
 
 ## When to Animate
 
