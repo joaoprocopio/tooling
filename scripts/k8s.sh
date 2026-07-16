@@ -1,7 +1,6 @@
 #!/bin/env bash
 
-
-# k8s
+#
 sudo apt-get update
 sudo apt-get install -y apt-transport-https ca-certificates curl gnupg
 
@@ -17,8 +16,3 @@ sudo chmod 644 /etc/apt/sources.list.d/kubernetes.list
 #
 sudo apt-get update
 sudo apt-get install -y kubectl
-
-# minikube
-curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube_latest_amd64.deb
-sudo dpkg -i minikube_latest_amd64.deb
-rm minikube_latest_amd64.deb
