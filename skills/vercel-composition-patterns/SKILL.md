@@ -1,5 +1,5 @@
 ---
-name: composition-patterns
+name: vercel-composition-patterns
 description:
   React composition patterns that scale. Use when refactoring components with
   boolean prop proliferation, building flexible component libraries, or
@@ -9,7 +9,7 @@ description:
 license: MIT
 metadata:
   author: vercel
-  version: "1.0.0"
+  version: '1.0.0'
 ---
 
 # React Composition Patterns

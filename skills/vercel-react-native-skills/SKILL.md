@@ -1,5 +1,5 @@
 ---
-name: react-native-skills
+name: vercel-react-native-skills
 description:
   React Native and Expo best practices for building performant mobile apps. Use
   when building React Native components, optimizing list performance,
@@ -8,7 +8,7 @@ description:
 license: MIT
 metadata:
   author: vercel
-  version: "1.0.0"
+  version: '1.0.0'
 ---
 
 # React Native Skills
