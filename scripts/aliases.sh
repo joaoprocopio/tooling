@@ -7,6 +7,7 @@ alias docker-compose="docker compose"
 alias k="kubectl"
 alias dk="docker"
 alias dkc="docker compose"
+alias ls="ls --color=auto"
 alias ll="ls -lhaF --group-directories-first"' | tee --append ~/.zshrc >/dev/null
 
 echo '
