@@ -1,11 +1,11 @@
 ---
-name: bkt-pr-review
+name: twg-pr-review
 description: "Review a PR, or a delta against a fixed point, along two axes, and return findings anchored to the line."
 argument-hint: "<pr-id…> or <ref>"
 disable-model-invocation: true
 ---
 
-Review a Bitbucket PR, or a delta against any ref, along two axes: Standards and Spec. Call the Skill tool for `bkt-pr` first, which carries checkout, anchors, drift, threads, suggestions, resolution, tasks, and the voice every step below uses. `bkt-pr-fix` is the other half of the loop: it works the threads this skill writes.
+Review a Bitbucket PR, or a delta against any ref, along two axes: Standards and Spec. Call the Skill tool for `twg-pr` first, which carries checkout, anchors, drift, threads, suggestions, resolution, tasks, and the voice every step below uses. `twg-pr-fix` is the other half of the loop: it works the threads this skill writes.
 
 ## The fixed point
 
@@ -23,7 +23,7 @@ Post a finding that changes the code or changes the merge decision. A finding th
 
 ## Process
 
-### 1. Read and check out the PRs (`bkt-pr`)
+### 1. Read and check out the PRs (`twg-pr`)
 
 Check each PR out, so the diff the axes measure is the head the server holds and the head SHA is a fact from git rather than an assumption.
 
@@ -44,7 +44,7 @@ When the diff touches a file an agent reads, `writing-for-agents` judges that fi
 A sub-agent's finding is a hypothesis until a command reproduces it. Five checks eliminate most of them:
 
 - **The repo beats the bar**: what the spec asks for by number is not excess, and a documented standard beats a generic smell.
-- **The anchor lands in a hunk**: verify every anchor against `bkt pr diff`, because a comment on the wrong line discredits the rest and a line outside every hunk is refused outright.
+- **The anchor lands in a hunk**: take every line number from `twg bb prs diff-line`, because a comment on the wrong line discredits the rest and a line outside every hunk is refused outright.
 - **The head is the one you reviewed**: compare it against step 1's SHA, and say so in the general comment when it advanced.
 - **The thread exists**: read the live threads, because a finding that repeats one belongs in that thread as a reply.
 - **The old thread is spent**: a thread from an earlier run of this skill whose finding the current head fixes gets resolved instead of repeated, which is what makes a second review of the same PR safe.
@@ -63,18 +63,18 @@ One general comment per PR, and one inline comment per anchor that clears the ba
 
 **Done when** every sentence asserts a fact checked in step 3.
 
-### 5. Post the comments (`bkt-pr`)
+### 5. Post the comments (`twg-pr`)
 
 Run this step when the fixed point came from a PR. Post each finding on its anchor and a repeat as a reply on the thread that already carries it.
 
-Raise every merge blocker as a task, and let the task text carry the whole finding: on Data Center the task is itself a comment, so a blocker posted both ways says everything twice. `bkt-pr-fix` closes the blocker against that task.
+Raise every merge blocker as a task attached to its thread: the thread carries the finding and the evidence, and the task's one line names the change that unblocks the merge. `twg-pr-fix` closes the blocker against that task.
 
-**Done when** the posted threads carry the anchors you intended, and every merge blocker exists once, as a task.
+**Done when** the posted threads carry the anchors you intended, and every merge blocker exists once, as a task attached to its thread.
 
 ### 6. Report the findings
 
-Report `## Standards` and `## Spec` as separate sections, each ranked within itself, and give the count and the worst finding per axis: one winner picked across both axes collapses the separation. Close on the verdict you would give the PR, approve or decline, and leave the command to the user.
+Report `## Standards` and `## Spec` as separate sections, each ranked within itself, and give the count and the worst finding per axis: one winner picked across both axes collapses the separation. Close on the verdict you would give the PR, approve, request changes, or decline, and leave the command to the user.
 
-When the fixed point is a bare ref, this report is the deliverable and `bkt-pr-fix` takes it as its subject, so give every finding the four fields that skill sorts on: **file**, **line**, the **change** it asks for, and its **axis**. Nothing carries a thread ID, because nothing was posted.
+When the fixed point is a bare ref, this report is the deliverable and `twg-pr-fix` takes it as its subject, so give every finding the four fields that skill sorts on: **file**, **line**, the **change** it asks for, and its **axis**. Nothing carries a thread ID, because nothing was posted.
 
 **Done when** every finding from step 3 appears in exactly one section, and each one posted also names its thread ID.
