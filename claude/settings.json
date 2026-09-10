@@ -6,16 +6,18 @@
     "pr": "false",
     "sessionUrl": false
   },
-  "autoUpdate": true,
+  "autoContinueAtUsageLimit": false,
+  "awaySummaryEnabled": false,
   "disableBundledSkills": true,
-  "effortLevel": "medium",
+  "enableArtifact": false,
+  "enableWorkflows": false,
   "env": {
-    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
     "CLAUDE_CODE_IDE_SKIP_AUTO_INSTALL": "1"
   },
-  "model": "opus[1m]",
   "outputStyle": "asd-ste100",
   "remoteControlAtStartup": false,
+  "switchModelsOnFlag": false,
   "theme": "auto",
-  "verbose": true
+  "verbose": true,
+  "workflowKeywordTriggerEnabled": false
 }
