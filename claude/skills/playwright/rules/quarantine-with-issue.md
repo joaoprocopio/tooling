@@ -9,18 +9,32 @@ A broken test leaves the suite by fix or by removal, never by being forgotten. B
 **Incorrect:**
 
 ```ts
-test.skip("guest confirms attendance", async ({ page }) => { /* … */ });
+test.skip("guest confirms attendance", async ({ page }) => {
+  /* … */
+});
 test.skip(process.env.TARGET === "staging", "broken on staging");
 ```
 
 **Correct:**
 
 ```ts
-test.fixme("guest confirms attendance", {
-  annotation: { type: "issue", description: "https://issues.example.com/E2E-123" },
-}, async ({ page }) => { /* … */ });
+test.fixme(
+  "guest confirms attendance",
+  {
+    annotation: {
+      type: "issue",
+      description: "https://issues.example.com/E2E-123",
+    },
+  },
+  async ({ page }) => {
+    /* … */
+  },
+);
 
-test.skip(({ browserName }) => browserName === "firefox", "no touch events in Firefox");
+test.skip(
+  ({ browserName }) => browserName === "firefox",
+  "no touch events in Firefox",
+);
 ```
 
 Setting `forbidOnly: !!process.env.CI` blocks a forgotten `test.only` from silently shrinking the suite to one test.

@@ -8,16 +8,16 @@ A change can pass one axis and fail the other. Code follows every standard while
 
 Both briefs end with this. Step 3 anchors and checks a finding by these fields and step 5 posts it by them, so each brief asks for all eight.
 
-| Field       | What it holds                                                        |
-| ----------- | -------------------------------------------------------------------- |
-| `file`      | the path as the diff spells it                                       |
-| `text`      | the anchor text of the line, which is what `pr.diff-line` takes      |
-| `side`      | new or old, since a removed line anchors on the old side             |
-| `change`    | one line naming what to do, phrased as an instruction                |
-| `evidence`  | the standard, the spec line, or the command output that proves it    |
-| `axis`      | Standards or Spec                                                    |
-| `blocker`   | whether it gates the merge                                           |
-| `suggestion`| the replacement lines, when the fix is a known set of them           |
+| Field        | What it holds                                                     |
+| ------------ | ----------------------------------------------------------------- |
+| `file`       | the path as the diff spells it                                    |
+| `text`       | the anchor text of the line, which is what `pr.diff-line` takes   |
+| `side`       | new or old, since a removed line anchors on the old side          |
+| `change`     | one line naming what to do, phrased as an instruction             |
+| `evidence`   | the standard, the spec line, or the command output that proves it |
+| `axis`       | Standards or Spec                                                 |
+| `blocker`    | whether it gates the merge                                        |
+| `suggestion` | the replacement lines, when the fix is a known set of them        |
 
 Ask for the line's anchor text: a sub-agent reads the local file, and a local number is not the number the diff carries.
 
@@ -43,7 +43,7 @@ On top of what the repo documents, the Standards axis carries the smell baseline
 
 ## The smell baseline
 
-Each reads *what it is*, then *what to do about it* (Fowler, _Refactoring_, ch. 3):
+Each reads _what it is_, then _what to do about it_ (Fowler, _Refactoring_, ch. 3):
 
 - **Mysterious Name**: a function, variable, or type whose name hides what it does or holds. So: Rename it; when no honest name comes, the design is the problem.
 - **Duplicated Code**: the same logic shape in more than one hunk or file of the change. So: Extract the shape and call it from both.

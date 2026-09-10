@@ -39,24 +39,24 @@ export default defineConfig({
 
 Ordered by impact: the top rules sustain every rule below them. Read the rule file before working on its area.
 
-| Rule | Impact |
-| --- | --- |
-| [wait-web-first-assertions](rules/wait-web-first-assertions.md) | CRITICAL |
-| [wait-assert-action-effects](rules/wait-assert-action-effects.md) | CRITICAL |
-| [config-retry-as-detector](rules/config-retry-as-detector.md) | CRITICAL |
-| [select-by-test-id](rules/select-by-test-id.md) | HIGH |
-| [journeys-smallest-proof](rules/journeys-smallest-proof.md) | HIGH |
-| [data-unique-identifiable](rules/data-unique-identifiable.md) | HIGH |
-| [provision-via-intent-helpers](rules/provision-via-intent-helpers.md) | HIGH |
-| [fixtures-compose-explicitly](rules/fixtures-compose-explicitly.md) | HIGH |
-| [env-parametrize-only](rules/env-parametrize-only.md) | HIGH |
-| [network-no-mocks](rules/network-no-mocks.md) | HIGH |
-| [cleanup-janitor](rules/cleanup-janitor.md) | MEDIUM |
-| [wait-disable-animations](rules/wait-disable-animations.md) | MEDIUM |
-| [structure-persona-projects](rules/structure-persona-projects.md) | MEDIUM |
-| [structure-component-objects](rules/structure-component-objects.md) | MEDIUM |
-| [config-timeout-budget](rules/config-timeout-budget.md) | MEDIUM |
-| [quarantine-with-issue](rules/quarantine-with-issue.md) | MEDIUM |
+| Rule                                                                  | Impact   |
+| --------------------------------------------------------------------- | -------- |
+| [wait-web-first-assertions](rules/wait-web-first-assertions.md)       | CRITICAL |
+| [wait-assert-action-effects](rules/wait-assert-action-effects.md)     | CRITICAL |
+| [config-retry-as-detector](rules/config-retry-as-detector.md)         | CRITICAL |
+| [select-by-test-id](rules/select-by-test-id.md)                       | HIGH     |
+| [journeys-smallest-proof](rules/journeys-smallest-proof.md)           | HIGH     |
+| [data-unique-identifiable](rules/data-unique-identifiable.md)         | HIGH     |
+| [provision-via-intent-helpers](rules/provision-via-intent-helpers.md) | HIGH     |
+| [fixtures-compose-explicitly](rules/fixtures-compose-explicitly.md)   | HIGH     |
+| [env-parametrize-only](rules/env-parametrize-only.md)                 | HIGH     |
+| [network-no-mocks](rules/network-no-mocks.md)                         | HIGH     |
+| [cleanup-janitor](rules/cleanup-janitor.md)                           | MEDIUM   |
+| [wait-disable-animations](rules/wait-disable-animations.md)           | MEDIUM   |
+| [structure-persona-projects](rules/structure-persona-projects.md)     | MEDIUM   |
+| [structure-component-objects](rules/structure-component-objects.md)   | MEDIUM   |
+| [config-timeout-budget](rules/config-timeout-budget.md)               | MEDIUM   |
+| [quarantine-with-issue](rules/quarantine-with-issue.md)               | MEDIUM   |
 
 ## Per-project decisions
 

@@ -23,8 +23,12 @@ export const test = base.extend<{ api: RsvpApi }>({ api: /* provisioning */ });
 
 ```ts
 export const test = base.extend<{ api: RsvpApi }>({
-  page: async ({ page }, use) => { /* disable animations */ await use(page); },
-  api: async ({ playwright, token }, use) => { /* provisioning context */ },
+  page: async ({ page }, use) => {
+    /* disable animations */ await use(page);
+  },
+  api: async ({ playwright, token }, use) => {
+    /* provisioning context */
+  },
 });
 ```
 

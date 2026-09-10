@@ -22,7 +22,9 @@ test("guest confirms attendance", async ({ page }) => {
 
 ```ts
 test("guest confirms attendance", async ({ page, api }, testInfo) => {
-  const { inviteUrl } = await createEventWithGuest(api, { guestName: uid(testInfo) });
+  const { inviteUrl } = await createEventWithGuest(api, {
+    guestName: uid(testInfo),
+  });
   await page.goto(inviteUrl);
   await page.getByTestId("confirm-attendance").click();
   await expect(page.getByTestId("confirmation-banner")).toBeVisible();
@@ -39,11 +41,15 @@ Three rules govern the layer. They name **roles**, not folders: where the files 
 // the service: speaks HTTP, and knows nothing about why it was called
 export class RsvpApi {
   constructor(private request: APIRequestContext) {}
-  createEvent(body: NewEvent) { return this.request.post("events/", { data: body }); }
+  createEvent(body: NewEvent) {
+    return this.request.post("events/", { data: body });
+  }
 }
 
 // the helper: says what the test means, and receives the service
-export const createEventWithGuest = (api: RsvpApi, data: GuestData) => { /* ... */ };
+export const createEventWithGuest = (api: RsvpApi, data: GuestData) => {
+  /* ... */
+};
 ```
 
 ## The request context for provisioning
@@ -52,9 +58,12 @@ The API rarely shares the front end’s host or headers, which makes the built-i
 
 ```ts
 export const test = base.extend<{ api: RsvpApi }, { token: string }>({
-  token: [async ({ playwright }, use) => {
-    await use(await obtainToken(playwright, credentials()));
-  }, { scope: "worker" }],
+  token: [
+    async ({ playwright }, use) => {
+      await use(await obtainToken(playwright, credentials()));
+    },
+    { scope: "worker" },
+  ],
 
   api: async ({ playwright, token }, use) => {
     const context = await playwright.request.newContext({
@@ -69,7 +78,7 @@ export const test = base.extend<{ api: RsvpApi }, { token: string }>({
 
 Five constraints hold that fixture together:
 
-- **`page.request` and `context.request` are banned for provisioning.** They read the browser’s cookie jar *and write to it*: a setup call answering with `Set-Cookie` rewrites the session mid-test, and the test then passes or fails on whether the backend happened to renew it. Use `playwright.request.newContext()`, which has an isolated jar. The `playwright` fixture is worker-scoped, since `PlaywrightWorkerArgs` is `{ playwright, browser }`, which is what lets a worker-scoped fixture build one.
+- **`page.request` and `context.request` are banned for provisioning.** They read the browser’s cookie jar _and write to it_: a setup call answering with `Set-Cookie` rewrites the session mid-test, and the test then passes or fails on whether the backend happened to renew it. Use `playwright.request.newContext()`, which has an isolated jar. The `playwright` fixture is worker-scoped, since `PlaywrightWorkerArgs` is `{ playwright, browser }`, which is what lets a worker-scoped fixture build one.
 - **One login per worker, as long as the token outlives the run.** With 200 tests on 8 workers that is 8 logins instead of 200, and a token is read-only, so sharing it carries none of the mutation hazard a shared `storageState` does. If the token expires before a worker finishes, dozens of tests fail at once with HTTP 401 and it reads as generalized flakiness. At that point the scope drops back to per test, or refresh is added.
 - **What crosses to the browser is the token, not the storage state.** The official docs show `apiRequestContext.storageState()` as the bridge, and it carries only what the backend set with `Set-Cookie`. Where the front end writes the session from JavaScript, that state comes back empty. A session-cookie backend is the one case where passing `storageState` is right.
 - **`obtainToken` receives its credentials.** One account for the whole suite holds as long as nothing mutates the account itself, and every test already builds its own data, as described in [data-unique-identifiable](data-unique-identifiable.md). One account per worker, keyed by `workerInfo.parallelIndex`, becomes the target the moment tests start changing profile or settings. Because the credentials are injected, that is a change in the fixture and nowhere else.

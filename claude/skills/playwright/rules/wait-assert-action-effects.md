@@ -26,5 +26,5 @@ Four related traps, all documented upstream:
 
 - **“It works if I add a delay” is a diagnosis, not a fix.** The delay that appears to fix a lost click proves the race exists. The real fix belongs in the product, where controls are born `disabled` until hydration completes, or in asserting a deterministic readiness signal.
 - **Lazy content shifts layout between aim and click**: Playwright clicks a valid neighbor, with no error. Assert the state that stabilizes the page first (skeleton gone, list loaded) and treat layout shift as a product bug.
-- **Popups and downloads**: register `waitForEvent` *before* the action that triggers it. Registered after the click, the event is lost with no way to recover it. Downloaded files are discarded when the browser context closes, so persist them with `download.saveAs()` inside the test.
+- **Popups and downloads**: register `waitForEvent` _before_ the action that triggers it. Registered after the click, the event is lost with no way to recover it. Downloaded files are discarded when the browser context closes, so persist them with `download.saveAs()` inside the test.
 - **Dialog listeners**: with no listener Playwright dismisses dialogs on its own, but registering one, even only for logging, transfers that responsibility. Without `accept()` or `dismiss()` the action blocks until timeout.

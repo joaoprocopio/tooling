@@ -20,7 +20,7 @@ await expect(page.getByTestId("welcome-message")).toBeVisible();
 await expect(el).toHaveText("Confirmed");
 ```
 
-An `await` *inside* the parentheses of `expect()` is the smell: it captures a value at an arbitrary instant and loses all polling. Rewrite it as a web-first assertion.
+An `await` _inside_ the parentheses of `expect()` is the smell: it captures a value at an arbitrary instant and loses all polling. Rewrite it as a web-first assertion.
 
 Before every action, Playwright already waits for the element to be visible, stable, enabled, and unobscured. Four consequences follow:
 

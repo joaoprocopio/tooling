@@ -30,27 +30,27 @@ No adapter for the host means the workflow stops there. Name the host, name the 
 
 Workflows call these by name. An adapter that cannot serve one says so under its `## Not served` heading, alongside the fallback that replaces it.
 
-| Operation         | What it produces                                                      |
-| ----------------- | --------------------------------------------------------------------- |
-| `pr.identity`     | target, source branch, head SHA, description                          |
-| `pr.files`        | the changed files with their added and removed counts                 |
-| `pr.diff`         | the delta between the fixed point and the head                        |
-| `pr.diff-line`    | the line numbers the diff carries for a piece of anchor text          |
-| `thread.list`     | every live thread with its ID, anchor, and body                       |
-| `thread.create`   | a thread anchored to a line                                           |
-| `thread.reply`    | a reply under a thread                                                |
-| `thread.resolve`  | a thread marked closed                                                |
-| `thread.reopen`   | a closed thread live again                                            |
-| `blocker.list`    | what gates the merge                                                  |
-| `blocker.create`  | a finding raised as a gate on the merge                               |
-| `blocker.resolve` | a gate lifted                                                         |
-| `checks.read`     | the build result on the head                                          |
-| `checks.log`      | the log of the failing build                                          |
-| `verdict`         | approve, request changes, or decline; the user runs it                |
-| `pr.create`       | the change opened for review                                          |
-| `pr.update`       | title, description, target, reviewers, or draft state changed         |
-| `pr.reviewers`    | who the repo adds on its own, and who is already requested            |
-| `pr.queue`        | the changes waiting on this user, when no id was given                |
+| Operation         | What it produces                                              |
+| ----------------- | ------------------------------------------------------------- |
+| `pr.identity`     | target, source branch, head SHA, description                  |
+| `pr.files`        | the changed files with their added and removed counts         |
+| `pr.diff`         | the delta between the fixed point and the head                |
+| `pr.diff-line`    | the line numbers the diff carries for a piece of anchor text  |
+| `thread.list`     | every live thread with its ID, anchor, and body               |
+| `thread.create`   | a thread anchored to a line                                   |
+| `thread.reply`    | a reply under a thread                                        |
+| `thread.resolve`  | a thread marked closed                                        |
+| `thread.reopen`   | a closed thread live again                                    |
+| `blocker.list`    | what gates the merge                                          |
+| `blocker.create`  | a finding raised as a gate on the merge                       |
+| `blocker.resolve` | a gate lifted                                                 |
+| `checks.read`     | the build result on the head                                  |
+| `checks.log`      | the log of the failing build                                  |
+| `verdict`         | approve, request changes, or decline; the user runs it        |
+| `pr.create`       | the change opened for review                                  |
+| `pr.update`       | title, description, target, reviewers, or draft state changed |
+| `pr.reviewers`    | who the repo adds on its own, and who is already requested    |
+| `pr.queue`        | the changes waiting on this user, when no id was given        |
 
 Two operations can be one command. GitHub resolves a thread and lifts the blocker it carries with the same mutation, while Bitbucket serves each against its own id space. The contract keeps them apart so the adapter that separates them can, and an adapter that serves both with one command says so on both rows.
 

@@ -55,14 +55,14 @@ The cached resources needed to replay the page:
 
 ## What a trace captures
 
-| Category | Details |
-|----------|---------|
-| **Actions** | Clicks, fills, hovers, keyboard input, navigations |
-| **DOM** | Full DOM snapshot before and after each action |
-| **Screenshots** | Visual state at each step |
-| **Network** | All requests, responses, headers, bodies, timing |
-| **Console** | All console.log, warn, and error messages |
-| **Timing** | Precise timing for each operation |
+| Category        | Details                                            |
+| --------------- | -------------------------------------------------- |
+| **Actions**     | Clicks, fills, hovers, keyboard input, navigations |
+| **DOM**         | Full DOM snapshot before and after each action     |
+| **Screenshots** | Visual state at each step                          |
+| **Network**     | All requests, responses, headers, bodies, timing   |
+| **Console**     | All console.log, warn, and error messages          |
+| **Timing**      | Precise timing for each operation                  |
 
 ## What traces are for
 
@@ -110,14 +110,14 @@ playwright-cli tracing-stop
 
 ## Choosing between trace, video, and screenshot
 
-| Feature | Trace | Video | Screenshot |
-|---------|-------|-------|------------|
-| **Format** | .trace file | .webm video | .png or .jpeg image |
-| **DOM inspection** | Yes | No | No |
-| **Network details** | Yes | No | No |
-| **Step-by-step replay** | Yes | Continuous | Single frame |
-| **File size** | Medium | Large | Small |
-| **Best for** | Debugging | Demos | One-off capture |
+| Feature                 | Trace       | Video       | Screenshot          |
+| ----------------------- | ----------- | ----------- | ------------------- |
+| **Format**              | .trace file | .webm video | .png or .jpeg image |
+| **DOM inspection**      | Yes         | No          | No                  |
+| **Network details**     | Yes         | No          | No                  |
+| **Step-by-step replay** | Yes         | Continuous  | Single frame        |
+| **File size**           | Medium      | Large       | Small               |
+| **Best for**            | Debugging   | Demos       | One-off capture     |
 
 ## Two habits that keep traces useful
 

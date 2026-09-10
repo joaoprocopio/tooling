@@ -5,7 +5,7 @@ description: Discover an application’s user journeys from its code and produce
 
 # E2E test matrix
 
-Produce the **matrix**: a committed, prioritized inventory of the application’s user journeys, ordered by *impact of breakage × frequency of use*. The matrix is the plan that feeds an end-to-end (E2E) suite, and its top untested row is always the next test to write. Invoke the `/playwright` skill to write the tests; this skill decides **what** to test and **in which order**.
+Produce the **matrix**: a committed, prioritized inventory of the application’s user journeys, ordered by _impact of breakage × frequency of use_. The matrix is the plan that feeds an end-to-end (E2E) suite, and its top untested row is always the next test to write. Invoke the `/playwright` skill to write the tests; this skill decides **what** to test and **in which order**.
 
 One stance is inviolable: **journeys are discovered, never invented.** Every journey in the matrix must trace back to concrete evidence in the code, such as a route, a form, a mutation, or a screen. A journey you cannot point at is fiction, and fiction in a coverage plan is worse than a gap, because it marks ground as covered that nobody ever tested.
 
@@ -38,13 +38,13 @@ A **journey** is a user goal that crosses one or more routes, such as “guest c
 Assign each journey four attributes:
 
 - **Persona**, with the tag the suite will route it by: `@guest`, `@admin`, and so on
-- **Impact of breakage** (high, medium, or low): what the business loses while this is down. Money and irrecoverable moments, such as an event happening *today*, outrank convenience
+- **Impact of breakage** (high, medium, or low): what the business loses while this is down. Money and irrecoverable moments, such as an event happening _today_, outrank convenience
 - **Frequency of use** (high, medium, or low): how often real users walk it, measured when possible, and marked as an estimate otherwise
 - **Priority**: impact × frequency, breaking ties toward impact
 
 ## Step 4: emit the matrix
 
-Write `e2e/MATRIX.md` in the target repo. It is committed, because it carries what spec file names cannot: priority, what is *not yet* tested, and what was excluded and why. Use this exact structure:
+Write `e2e/MATRIX.md` in the target repo. It is committed, because it carries what spec file names cannot: priority, what is _not yet_ tested, and what was excluded and why. Use this exact structure:
 
 ```markdown
 # E2E Test Matrix
@@ -52,14 +52,14 @@ Write `e2e/MATRIX.md` in the target repo. It is committed, because it carries wh
 Denominator: 34 routes, 31 mapped into journeys, 3 excluded (below).
 Frequency source: analytics, product interview, or estimated. Generated: 2026-08-17.
 
-| # | Journey | Persona | Routes | Impact | Frequency | Priority | Status |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| 0001 | journey title, in stakeholder language | @guest | /invite/:token | high | high | P1 | untested |
+| #    | Journey                                | Persona | Routes         | Impact | Frequency | Priority | Status   |
+| ---- | -------------------------------------- | ------- | -------------- | ------ | --------- | -------- | -------- |
+| 0001 | journey title, in stakeholder language | @guest  | /invite/:token | high   | high      | P1       | untested |
 
 ## Excluded routes
 
-| Route | Reason |
-| --- | --- |
+| Route   | Reason                                    |
+| ------- | ----------------------------------------- |
 | /health | infrastructure endpoint, no user behavior |
 ```
 

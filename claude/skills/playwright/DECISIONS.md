@@ -49,7 +49,9 @@ Whichever you take, numbers are append-only: a new journey takes the next one, a
 `test()` and `describe()` titles, and every `test.step()`, are read by whoever decides coverage. Their language is the product’s call, not the codebase’s: for a Brazilian product whose stakeholders read the report, that is pt-BR, and the HTML report then serves as coverage documentation nobody has to translate.
 
 ```ts
-test("convidado confirma presença pelo link do convite @guest", async ({ page }) => {
+test("convidado confirma presença pelo link do convite @guest", async ({
+  page,
+}) => {
   await test.step("abre o convite recebido", async () => {
     // …
   });

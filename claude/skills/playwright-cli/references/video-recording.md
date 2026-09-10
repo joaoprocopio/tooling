@@ -53,24 +53,24 @@ Overlays are `pointer-events: none`, so they never interfere with page interacti
 The script below records a TodoMVC walkthrough end to end: it opens a chapter card, types an item, adds a sticky annotation that survives further actions, and finally highlights a located element with a caption positioned from its bounding box.
 
 ```js
-async page => {
+async (page) => {
   const size = { width: 1280, height: 800 };
-  await page.screencast.start({ path: 'video.webm', size });
-  await page.goto('https://demo.playwright.dev/todomvc');
+  await page.screencast.start({ path: "video.webm", size });
+  await page.goto("https://demo.playwright.dev/todomvc");
 
   // blurs the page, shows a dialog, blocks until duration expires, then auto-removes
-  await page.screencast.showChapter('Adding Todo Items', {
-    description: 'We will add several items to the todo list.',
+  await page.screencast.showChapter("Adding Todo Items", {
+    description: "We will add several items to the todo list.",
     duration: 2000,
   });
 
-  const input = page.getByRole('textbox', { name: 'What needs to be done?' });
-  await input.pressSequentially('Walk the dog', { delay: 60 });
-  await input.press('Enter');
+  const input = page.getByRole("textbox", { name: "What needs to be done?" });
+  await input.pressSequentially("Walk the dog", { delay: 60 });
+  await input.press("Enter");
   await page.waitForTimeout(1000);
 
-  await page.screencast.showChapter('Verifying Results', {
-    description: 'Checking the item appeared in the list.',
+  await page.screencast.showChapter("Verifying Results", {
+    description: "Checking the item appeared in the list.",
     duration: 2000,
   });
 
@@ -83,15 +83,16 @@ async page => {
     </div>
   `);
 
-  await input.pressSequentially('Buy groceries', { delay: 60 });
-  await input.press('Enter');
+  await input.pressSequentially("Buy groceries", { delay: 60 });
+  await input.press("Enter");
   await page.waitForTimeout(1500);
 
   await annotation.dispose();
 
   // highlight a located element, positioning the caption from its bounding box
-  const bounds = await page.getByText('Walk the dog').boundingBox();
-  await page.screencast.showOverlay(`
+  const bounds = await page.getByText("Walk the dog").boundingBox();
+  await page.screencast.showOverlay(
+    `
     <div style="position: absolute;
       top: ${bounds.y}px;
       left: ${bounds.x}px;
@@ -109,31 +110,33 @@ async page => {
       font-size: 14px;
       color: white;">Check it out, it is right above this text
     </div>
-  `, { duration: 2000 });
+  `,
+    { duration: 2000 },
+  );
 
   await page.screencast.stop();
-}
+};
 ```
 
 For anything the built-in chapter card does not cover, hand-craft the overlay with `page.screencast.showOverlay()`.
 
 ### Overlay API summary
 
-| Method | Use case |
-|--------|----------|
+| Method                                                                         | Use case                                                                |
+| ------------------------------------------------------------------------------ | ----------------------------------------------------------------------- |
 | `page.screencast.showChapter(title, { description?, duration?, styleSheet? })` | Full-screen chapter card with blurred backdrop, for section transitions |
-| `page.screencast.showOverlay(html, { duration? })` | Custom HTML overlay, for callouts, labels, and highlights |
-| `disposable.dispose()` | Remove a sticky overlay added without a duration |
-| `page.screencast.hideOverlays()` and `page.screencast.showOverlays()` | Hide or show all overlays temporarily |
+| `page.screencast.showOverlay(html, { duration? })`                             | Custom HTML overlay, for callouts, labels, and highlights               |
+| `disposable.dispose()`                                                         | Remove a sticky overlay added without a duration                        |
+| `page.screencast.hideOverlays()` and `page.screencast.showOverlays()`          | Hide or show all overlays temporarily                                   |
 
 ## Choosing between video and tracing
 
-| Feature | Video | Tracing |
-|---------|-------|---------|
-| Output | WebM file | Trace file, viewable in Trace Viewer |
-| Shows | Visual recording | DOM snapshots, network, console, actions |
-| Use case | Demos, documentation | Debugging, analysis |
-| Size | Larger | Smaller |
+| Feature  | Video                | Tracing                                  |
+| -------- | -------------------- | ---------------------------------------- |
+| Output   | WebM file            | Trace file, viewable in Trace Viewer     |
+| Shows    | Visual recording     | DOM snapshots, network, console, actions |
+| Use case | Demos, documentation | Debugging, analysis                      |
+| Size     | Larger               | Smaller                                  |
 
 ## Limitations
 

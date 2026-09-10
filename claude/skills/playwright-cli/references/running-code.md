@@ -139,7 +139,7 @@ playwright-cli run-code "async page => {
 
 ## File downloads
 
-Register the download event *before* the click that triggers it, then save the file where you want it:
+Register the download event _before_ the click that triggers it, then save the file where you want it:
 
 ```bash
 playwright-cli run-code "async page => {

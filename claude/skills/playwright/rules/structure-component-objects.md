@@ -8,7 +8,7 @@ Everything a test knows about the interface, meaning a URL, a selector, or an in
 
 This diverges from the official Page Object Model guidance, which organizes by page. Slack’s suite made the same move, “treating the application as components rather than pages”, and measured a 60% flakiness reduction after migrating. That is the incident already cited in [select-by-test-id](select-by-test-id.md). Organizing by page copies a shared component once per screen that shows it.
 
-The layer also turns *scoped by region* into structure instead of a naming convention: a nested component receives its parent’s locator and can only see inside it, so an ambiguous test id trips strict mode where it is declared.
+The layer also turns _scoped by region_ into structure instead of a naming convention: a nested component receives its parent’s locator and can only see inside it, so an ambiguous test id trips strict mode where it is declared.
 
 A route component takes `Page`, because it navigates, and exposes its children as methods:
 
@@ -17,9 +17,15 @@ A route component takes `Page`, because it navigates, and exposes its children a
 export class GuestsPage {
   constructor(private page: Page) {}
 
-  root()  { return this.page.getByTestId("guests-page"); }
-  form()  { return new GuestForm(this.root()); }
-  table() { return new GuestsTable(this.root()); }
+  root() {
+    return this.page.getByTestId("guests-page");
+  }
+  form() {
+    return new GuestForm(this.root());
+  }
+  table() {
+    return new GuestsTable(this.root());
+  }
 
   async open(eventId: string) {
     await this.page.goto(`/${eventId}/guest`);
@@ -34,10 +40,16 @@ A nested component takes the parent’s `Locator`, and every lookup starts from 
 export class GuestForm {
   constructor(private parent: Locator) {}
 
-  root() { return this.parent.getByTestId("guest-form"); }
-  name() { return this.root().getByTestId("name"); }
+  root() {
+    return this.parent.getByTestId("guest-form");
+  }
+  name() {
+    return this.root().getByTestId("name");
+  }
 
-  async fillName(value: string) { await this.name().fill(value); }
+  async fillName(value: string) {
+    await this.name().fill(value);
+  }
 }
 ```
 

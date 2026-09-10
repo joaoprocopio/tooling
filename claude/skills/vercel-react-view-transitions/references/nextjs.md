@@ -24,7 +24,7 @@ When following [implementation.md](implementation.md), apply these additions:
 
 ## Layout-Level ViewTransition
 
-**Do NOT add a layout-level VT wrapping `{children}` if pages have their own VTs.** A nested VT skips its own enter/exit only when it mounts or unmounts *as one unit* with a parent VT, which is exactly what a layout VT wrapping `{children}` causes — page-level enter/exit will silently not work. Remove the layout VT entirely. Nesting is otherwise fine and sometimes required: a child VT inside a *persistent* parent VT fires enter/exit normally, and two nested boundaries are the intended shape for [shared elements inside list items](../SKILL.md#composing-shared-elements-with-list-identity).
+**Do NOT add a layout-level VT wrapping `{children}` if pages have their own VTs.** A nested VT skips its own enter/exit only when it mounts or unmounts _as one unit_ with a parent VT, which is exactly what a layout VT wrapping `{children}` causes — page-level enter/exit will silently not work. Remove the layout VT entirely. Nesting is otherwise fine and sometimes required: a child VT inside a _persistent_ parent VT fires enter/exit normally, and two nested boundaries are the intended shape for [shared elements inside list items](../SKILL.md#composing-shared-elements-with-list-identity).
 
 A bare `<ViewTransition>` in layout works only if pages have **no** VTs of their own.
 
@@ -37,7 +37,7 @@ A bare `<ViewTransition>` in layout works only if pages have **no** VTs of their
 No wrapper component needed, works in Server Components:
 
 ```tsx
-<Link href="/products/1" transitionTypes={['transition-to-detail']}>
+<Link href="/products/1" transitionTypes={["transition-to-detail"]}>
   View Product
 </Link>
 ```
@@ -55,7 +55,7 @@ A page transition can animate whatever Next.js renders during navigation, includ
 When an animation depends on dynamic destination content, use Next.js prefetching and caching to make that content available ahead of time. `<Link>` automatically prefetches in production, but the default behavior for dynamic routes may only prefetch a shell or loading boundary. Set `prefetch={true}` to prefetch the full route, and cache the data needed to render the shared content.
 
 ```tsx
-<Link href={nextHref} prefetch={true} transitionTypes={['nav-forward']}>
+<Link href={nextHref} prefetch={true} transitionTypes={["nav-forward"]}>
   Next
 </Link>
 ```
@@ -71,15 +71,17 @@ See the Next.js [View Transitions guide](https://nextjs.org/docs/app/guides/view
 ## Programmatic Navigation
 
 ```tsx
-'use client';
+"use client";
 
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 
 function DetailButton({ href }: { href: string }) {
   const router = useRouter();
 
   return (
-    <button onClick={() => router.push(href, { transitionTypes: ['nav-forward'] })}>
+    <button
+      onClick={() => router.push(href, { transitionTypes: ["nav-forward"] })}
+    >
       Open
     </button>
   );
@@ -95,10 +97,10 @@ The `transitionTypes` option adds the types inside the router's navigation Trans
 For search/sort/filter that re-renders on the server (via URL params), use `startTransition` + `router.replace`. VTs activate because the state update is inside `startTransition`:
 
 ```tsx
-'use client';
+"use client";
 
-import { useRouter } from 'next/navigation';
-import { startTransition } from 'react';
+import { useRouter } from "next/navigation";
+import { startTransition } from "react";
 
 function SortControl() {
   const router = useRouter();
@@ -109,7 +111,7 @@ function SortControl() {
     });
   }
 
-  return <button onClick={() => handleSort('newest')}>Newest</button>;
+  return <button onClick={() => handleSort("newest")}>Newest</button>;
 }
 ```
 
@@ -124,19 +126,23 @@ For immediate control feedback while the route commits, use `useOptimistic` for 
 The generalized sliding indicator ([Sliding Indicator](patterns.md#sliding-indicator-tabs)) driven by navigation instead of local state: tabs are `<Link>`s, `active` comes from the URL (a server prop), and `useOptimistic` slides the indicator instantly while the route commits. Key the mounted indicator to committed `active` so the bar lands where navigation actually settles.
 
 ```tsx
-'use client';
-import Link from 'next/link';
-import { useOptimistic, useTransition, ViewTransition } from 'react';
+"use client";
+import Link from "next/link";
+import { useOptimistic, useTransition, ViewTransition } from "react";
 
-export function Tabs({ tabs, active, indicatorName = 'tab-indicator' }) {
+export function Tabs({ tabs, active, indicatorName = "tab-indicator" }) {
   const [optimisticActive, setOptimisticActive] = useOptimistic(active);
   const [, startTransition] = useTransition();
   return (
     <nav>
-      {tabs.map(t => (
-        <Link key={t.value} href={t.href} scroll={false}
-          aria-current={optimisticActive === t.value ? 'page' : undefined}
-          onNavigate={() => startTransition(() => setOptimisticActive(t.value))}>
+      {tabs.map((t) => (
+        <Link
+          key={t.value}
+          href={t.href}
+          scroll={false}
+          aria-current={optimisticActive === t.value ? "page" : undefined}
+          onNavigate={() => startTransition(() => setOptimisticActive(t.value))}
+        >
           <span>{t.label}</span>
           {active === t.value && (
             <ViewTransition name={indicatorName} share="tab-underline">
@@ -163,8 +169,16 @@ Directional slides + Suspense reveals coexist because they fire at different mom
   default="none"
 >
   <div>
-    <Suspense fallback={<ViewTransition exit="slide-down"><Skeleton /></ViewTransition>}>
-      <ViewTransition enter="slide-up" default="none"><Content /></ViewTransition>
+    <Suspense
+      fallback={
+        <ViewTransition exit="slide-down">
+          <Skeleton />
+        </ViewTransition>
+      }
+    >
+      <ViewTransition enter="slide-up" default="none">
+        <Content />
+      </ViewTransition>
     </Suspense>
   </div>
 </ViewTransition>
@@ -192,18 +206,29 @@ Same rules as explicit `<Suspense>`: use simple string props (not type maps) sin
 
 ```tsx
 // List page
-{products.map((product) => (
-  <Link key={product.id} href={`/products/${product.id}`} transitionTypes={['nav-forward']}>
-    <ViewTransition name={`product-${product.id}`}>
-      <Image src={product.image} alt={product.name} width={400} height={300} />
-    </ViewTransition>
-  </Link>
-))}
+{
+  products.map((product) => (
+    <Link
+      key={product.id}
+      href={`/products/${product.id}`}
+      transitionTypes={["nav-forward"]}
+    >
+      <ViewTransition name={`product-${product.id}`}>
+        <Image
+          src={product.image}
+          alt={product.name}
+          width={400}
+          height={300}
+        />
+      </ViewTransition>
+    </Link>
+  ));
+}
 
 // Detail page — same name
 <ViewTransition name={`product-${product.id}`}>
   <Image src={product.image} alt={product.name} width={800} height={600} />
-</ViewTransition>
+</ViewTransition>;
 ```
 
 If the pair's `share` is type-keyed (or classed via CSS that expects a type), every `<Link>` between the two views must carry the type via `transitionTypes` — a plain link click resolves the share map's `default`, and if that's `none` the morph silently never fires.
@@ -216,7 +241,12 @@ When navigating between dynamic segments of the same route (e.g., `/collection/[
 
 ```tsx
 <Suspense fallback={<Skeleton />}>
-  <ViewTransition key={slug} name="collection-content" share="auto" default="none">
+  <ViewTransition
+    key={slug}
+    name="collection-content"
+    share="auto"
+    default="none"
+  >
     <Content slug={slug} />
   </ViewTransition>
 </Suspense>

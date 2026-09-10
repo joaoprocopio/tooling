@@ -27,4 +27,4 @@ export const test = base.extend({
 });
 ```
 
-When a test’s subject *is* an animation, opt out locally and assert on the animation’s end state, never by sleeping through it.
+When a test’s subject _is_ an animation, opt out locally and assert on the animation’s end state, never by sleeping through it.
