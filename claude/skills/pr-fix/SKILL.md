@@ -9,12 +9,7 @@ disable-model-invocation: true
 
 Read the review feedback on a change, settle what it asks for, land the fixes, and close every thread. `pr-review` is the other half of the loop: it posts the findings this skill works.
 
-This skill is built on a shared vocabulary:
-
-- Call the Skill tool with `pr` for the forge vocabulary (**forge**, **adapter**, **pair**, **anchor**, **drift**, **thread**, **suggestion**, **blocker**, **check**, **frontier**) and the operation contract every step below calls by name. Resolve the adapter first and say which forge you got.
-- **The fork** and the four end states below are this skill's own vocabulary: every finding carries one label from each, and the labels decide which step handles it.
-
-The other skills are step-local: each step names the ones it calls, and calls them before doing its own work.
+Call the Skill tool with `pr` first, and read its `feedback.md`, for the forge vocabulary and the operation contract every step below calls by name. **The fork** and the four end states are this skill's own words: every finding carries one label from each, and the labels decide which step handles it.
 
 ## The subject
 
@@ -42,9 +37,9 @@ A finding ends in one of four states, and step 5 puts it there:
 
 ## Process
 
-### 1. Read the feedback and check out
+### 1. Read the feedback
 
-Check the branch out first, so steps 4 and 5 have the branch they edit.
+Fetch the head the way `pr` describes checkout, and stay on your branch: step 4 checks out.
 
 Read every live thread through `thread.list`, general and anchored. The general comment carries no anchor and is where the reviewer names what blocks the merge, so read it like any other finding and give it the whole diff as its subject. Read `blocker.list` alongside, because step 5 closes each blocker against the merge decision.
 
@@ -60,17 +55,15 @@ Resolve drift here. A review lands against a head that has since moved, so confi
 
 ### 3. Grill the open findings
 
-Call the Skill tool with `grilling` and carry every open finding into a single interview, the way `pr` describes the frontier. Give each question the reviewer's words, the anchored code, and your recommended answer.
+Carry every open finding into a single interview, the way `pr` describes the frontier. Give each question the reviewer's words, the anchored code, and your recommended answer.
 
-An answer can also be that the reviewer is wrong, which routes the finding to **discussed** rather than to a commit. When the interview settles a term or a decision the repo records, call the Skill tool with `domain-modeling` and write the glossary entry or ADR it earns. A finding that changes only the lines under it needs neither.
-
-When no user is there to answer, put every open finding in **discussed** and write the question into it, which keeps the decision with a human.
+An answer can also be that the reviewer is wrong, which routes the finding to **discussed**. When the interview settles a term or a decision the repo records, call the Skill tool with `domain-modeling` and write the glossary entry or ADR it earns. A finding that changes only the lines under it needs neither.
 
 **Done when** every open finding holds an answer, from the user or from the question left for the reviewer.
 
 ### 4. Apply the fixes
 
-Call the Skill tool with `karpathy-guidelines`, which governs the edit. Change what the finding asks for and stop there. Apply an attached suggestion by putting its fenced block in place of the anchored lines, confirming first that those lines still hold what the suggestion replaces. Keep one commit per finding, so step 5 can cite a SHA apiece.
+Check the branch out first, so this step and step 5 have the branch they edit. Then call the Skill tool with `karpathy-guidelines`, which governs the edit. Change what the finding asks for and stop there. Apply an attached suggestion the way `pr` describes. Keep one commit per finding, so step 5 can cite a SHA apiece.
 
 Run the repo's own checks, the way `pr` describes them.
 
@@ -78,15 +71,19 @@ Run the repo's own checks, the way `pr` describes them.
 
 ### 5. Reply and close out
 
-Call the Skill tool with `writing-guidelines` for the reply bodies. Push first, so every reply cites a SHA that exists on the remote, and re-read the remote before pushing the way `pr` describes branch drift, since a reviewer who pushed while step 4 ran is about to be overwritten. Then send one `thread.reply` per finding and put it in its end state:
+Re-read the remote the way `pr` describes branch drift, since a reviewer who pushed while step 4 ran is about to be overwritten. Push, so every reply cites a SHA that exists on the remote. Then write one `thread.reply` per finding the way `pr` describes writing, and put it in its end state:
 
 - **Fixed**: name what changed and the commit that changed it, then `thread.resolve` it and lift its blocker through `blocker.resolve`
 - **Answered**: give the reason it takes no change, cite the file or spec that carries the evidence, then resolve it
 - **Deferred**: name the issue now tracking the work and the reason it sits outside this change, then resolve it and lift its blocker through `blocker.resolve`
 - **Discussed**: ask the question or contest the claim with the evidence, and leave the thread open for the reviewer
 
-Read `checks.read` on the pushed head, and `checks.log` for anything red, since the failing lines say which finding it belongs to. A check red for the change is step 4's work again, so put its thread back through `thread.reopen` and go back. A check red for a cause outside the diff takes a reply of its own on the general comment naming that cause, which is what closes this step short of green.
+Read `checks.read` on the pushed head, and `checks.log` for anything red, since the failing lines say which finding it belongs to. A check red for the change is step 4's work again: put its thread back through `thread.reopen` and go back. A red for a cause outside the diff takes a reply of its own on the general comment, the way `pr` describes checks.
 
 A thread the reviewer revives is live again: take it through `thread.reopen` when the forge closed it, and work it from step 2.
 
-**Done when** every thread from step 1 carries a reply, every fixed, answered, or deferred one reads as resolved on the forge, and the pushed head is green or carries the reply explaining why it is not.
+**Done when**:
+
+- every thread from step 1 carries a reply
+- every fixed, answered, or deferred one reads as resolved on the forge
+- the pushed head is green or carries the reply explaining why it is not

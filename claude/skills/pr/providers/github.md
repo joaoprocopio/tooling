@@ -67,7 +67,7 @@ gh api --paginate repos/{owner}/{repo}/pulls/<id>/comments > comments.json
 
 `-f subject_type=file` with a `path` and no `line` anchors to a whole file.
 
-Every anchored post takes `commit_id`, and it must be the head SHA `pr.identity` returned. An anchor against a stale SHA is the common rejection: re-read the head, re-anchor, and post again rather than retrying the same body.
+Every anchored post takes `commit_id`, and it must be the head SHA `pr.identity` returned. A stale SHA is the common rejection: re-read the head before re-anchoring.
 
 ### `pr.diff-line`
 
@@ -79,7 +79,7 @@ gh pr diff <id> -- <file>        # or filter the full patch to that file
 
 Each hunk opens with `@@ -<old-start>,<old-count> +<new-start>,<new-count> @@`. Walk the body from that header. For the **new side**, start at `<new-start>` and count every `+` and context line. For the **old side**, start at `<old-start>` and count every `-` and context line. The line whose text matches carries the number to anchor on. A `\ No newline at end of file` marker counts as nothing.
 
-Match on text that appears once in the file. Text that matches more than once has no anchor: narrow it or take the finding to a general comment.
+Match on the anchor text, per `pr`.
 
 ## Threads
 
@@ -109,7 +109,7 @@ GitHub has no task object. It carries a blocker two ways, and an adapter uses bo
 
 So `blocker.create` is the `request-changes` verdict plus the thread that carries the evidence, `blocker.list` is the standing review decision plus the unresolved threads, and `blocker.resolve` is resolving that thread. A markdown checkbox in a comment body gates nothing and is not a blocker.
 
-The verdict is what blocks, and the verdict belongs to the user. So a step that would raise a blocker names the finding as blocking and leaves the `request-changes` command to the user.
+Since the verdict is the user's, a step that raises a blocker names the finding as blocking and leaves the `request-changes` command to them.
 
 ## Checks
 
@@ -122,13 +122,13 @@ gh run list -c <head-sha> -s failure --json databaseId,workflowName
 gh run view <run-id> --log-failed
 ```
 
-`--log-failed` returns only the failing steps. Take that over `--log`, which returns the whole run and costs the context that the finding needs.
+`--log-failed` returns only the failing steps, where `--log` returns the whole run and costs the context that the finding needs.
 
 ## Verdict
 
 A body is optional on `--approve` and **required** on `--request-changes` and `--comment`. So the reason rides inside the verdict, where Bitbucket needs a general comment first. `-F -` reads it from stdin.
 
-All three are the reviewer's terminal act and belong to the user: state the verdict you would give and let the user run the command. GitHub has no `unapprove`; a standing review is withdrawn by dismissing it through `PUT repos/{owner}/{repo}/pulls/<id>/reviews/<review-id>/dismissals`, which takes a message.
+GitHub has no `unapprove`. A standing review is withdrawn by dismissing it through `PUT repos/{owner}/{repo}/pulls/<id>/reviews/<review-id>/dismissals`, which takes a message.
 
 ## Not served
 
@@ -136,7 +136,7 @@ All three are the reviewer's terminal act and belong to the user: state the verd
 - **`blocker.create`**: no task object. The `request-changes` verdict plus a labelled thread replaces it, per **Blockers**.
 - **Decline**: GitHub closes rather than declines: `gh pr close <id> --comment "..."`, and `gh pr reopen <id>` undoes it.
 - **Checkout by the adapter**: `gh pr checkout <id>` exists, but the workflows fetch with `git` per `pr`, so that the branch a step edits is the one it chose.
-- **Applying a suggestion**: no command applies one. Apply a suggestion that came the other way by editing the anchored lines yourself, per `pr`.
+- **Applying a suggestion**: no command applies one. `pr` describes the manual apply.
 
 ## Batched review
 
@@ -146,4 +146,4 @@ All three are the reviewer's terminal act and belong to the user: state the verd
 gh api --method POST repos/{owner}/{repo}/pulls/<id>/reviews --input review.json
 ```
 
-Every comment in the array carries its own `path`, `line`, and `side`, so one rejected anchor rejects the whole review. Post outright per finding unless the user asks for a single review, and when they do, confirm every anchor through `pr.diff-line` before building the array.
+Every comment in the array carries its own `path`, `line`, and `side`, so one rejected anchor rejects the whole review. Post outright per finding. When the user asks for a single review, confirm every anchor through `pr.diff-line` before building the array.

@@ -16,7 +16,7 @@ This adapter serves two things:
 | ------------- | ---------------------- |
 | `pr.identity` | `<cli> ... --json ...` |
 | `pr.diff`     | `<cli> ...`            |
-| ...           | ...                    |
+| `thread.list` | `<cli> ...`            |
 
 ## Not served
 
