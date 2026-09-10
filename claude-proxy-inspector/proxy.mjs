@@ -4,7 +4,7 @@ import fs from "node:fs";
 import path from "node:path";
 
 /*
-ANTHROPIC_BASE_URL=http://127.0.0.1:8787 command claude -p "say ok" --model haiku
+ANTHROPIC_BASE_URL=http://127.0.0.1:8787 claude -p "say ok" --model haiku
 
 1. System prompt → markdown
 jq -r '[.system[].text] | join("\n\n---\n\n")' request.json > system.md
