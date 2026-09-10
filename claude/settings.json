@@ -1,16 +1,16 @@
 {
-  "env": {
-    "CLAUDE_CODE_IDE_SKIP_AUTO_INSTALL": "1"
-  },
+  "agentPushNotifEnabled": true,
   "attribution": {
     "commits": false,
     "pullRequests": false,
     "sessionUrl": false
   },
-  "theme": "auto",
   "autoUpdate": true,
-  "verbose": true,
+  "disableBundledSkills": true,
+  "env": {
+    "CLAUDE_CODE_IDE_SKIP_AUTO_INSTALL": "1"
+  },
   "remoteControlAtStartup": false,
-  "agentPushNotifEnabled": true,
-  "disableBundledSkills": true
+  "theme": "auto",
+  "verbose": true
 }
