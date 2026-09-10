@@ -14,6 +14,14 @@ jq -r '.tools[] | "# \(.name)\n\n\(.description)\n\n```json\n\(.input_schema|toj
 
 3. Nomes das tools
 jq -r '.tools[].name' request.json
+
+4. Peso por seção
+jq '{system:   ([.system[].text]|join("")|length),
+     tools:    ([.tools[]|tojson]|join("")|length),
+     messages: ([.messages[].content[]?|.text//""]|join("")|length)}' request.json
+
+5. Maiores blocos ordenados
+jq -r '.tools | map({name, chars:(tojson|length)}) | sort_by(-.chars) | .[] | "\(.chars)\t\(.name)"' request.json
 */
 
 const OUT = import.meta.dirname;
