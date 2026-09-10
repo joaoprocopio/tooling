@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-TOOLS="Agent,Bash,Edit,EnterWorktree,ExitWorktree,Glob,Grep,ListAgents,Monitor,PushNotification,Read,SendMessage,Skill,WebFetch,WebSearch,Workflow,Write"
+TOOLS="Agent,Bash,Edit,EnterWorktree,ExitWorktree,Glob,Grep,ListAgents,Monitor,PushNotification,Read,SendMessage,Skill,WebFetch,WebSearch,Write"
 FN_NAME="claude"
 
 SRC="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
