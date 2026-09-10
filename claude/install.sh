@@ -2,11 +2,8 @@
 
 set -euo pipefail
 
-TOOLS="Agent,Bash,Edit,EnterWorktree,ExitWorktree,Glob,Grep,ListAgents,Monitor,PushNotification,Read,SendMessage,Skill,WebFetch,WebSearch,Write"
+TOOLS="Agent,Bash,Edit,EnterWorktree,ExitWorktree,Glob,Grep,ListAgents,Monitor,PushNotification,Read,SendMessage,Skill,WebFetch,WebSearch,Workflow,Write"
 FN_NAME="claude"
-
-
-# ----------------------------------------------------------------------------
 
 SRC="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DEST="${CLAUDE_CONFIG_DIR:-$HOME/.claude}"
@@ -16,7 +13,6 @@ STAMP="$(date +%Y%m%d-%H%M%S)"
 BEGIN_MARK="# >>> claude-code (joaoprocopio/tools/claude) >>>"
 END_MARK="# <<< claude-code (joaoprocopio/tools/claude) <<<"
 
-# Copiados como estao. settings.json fica de fora: e merge, nao copia.
 ITEMS=(skills output-styles scripts SYSTEM.md)
 
 for arg in "$@"; do
@@ -29,8 +25,6 @@ done
 say() { printf '%s\n' "$*"; }
 
 command -v jq >/dev/null || { echo "faltando: jq" >&2; exit 1; }
-
-# --- 1. copia ---------------------------------------------------------------
 
 say "==> copiando para $DEST"
 [ -d "$DEST" ] || mkdir -p "$DEST"
@@ -59,8 +53,6 @@ for name in "${ITEMS[@]}"; do
   say "  + $name"
 done
 
-# --- 2. settings.json -------------------------------------------------------
-
 say "==> mesclando settings.json em $DEST/settings.json"
 SETTINGS="$DEST/settings.json"
 PATCH="$SRC/settings.json"
@@ -77,12 +69,8 @@ jq -s '.[0] * .[1]' "$SETTINGS" "$PATCH" > "$tmp"
 mv "$tmp" "$SETTINGS"
 say "  + $(jq -r 'keys | join(", ")' "$PATCH") (backup: settings.json.bak-$STAMP)"
 
-# --- 3. funcao no .zshrc ----------------------------------------------------
-
 say "==> funcao '$FN_NAME' em $ZSHRC"
 
-# Funcao e nao alias: repassa os argumentos e aceita quebra de linha.
-# O `command` interno evita recursao quando a funcao se chama `claude`.
 BLOCK="$BEGIN_MARK
 # Editado por: $SRC/install.sh
 $FN_NAME() {
