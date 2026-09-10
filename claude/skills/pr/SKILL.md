@@ -3,7 +3,11 @@ name: pr
 description: "Pull request mechanics shared by every review step: the forge adapter, the operation contract, the fixed point, the diff budget, anchors, drift, threads, suggestions, blockers, checks, and the verdict. Use when reviewing a change, opening one, or working review feedback."
 ---
 
-Reference for the mechanics every review step shares.
+# Pull request mechanics
+
+Reference for the mechanics every review step shares. `pr-open`, `pr-review`, and `pr-fix` are the workflows built on it, and each one calls this skill before its first step.
+
+This skill owns the vocabulary those workflows speak: **forge**, **adapter**, **operation**, **fixed point**, **pair**, **budget**, **anchor**, **drift**, **thread**, **suggestion**, **blocker**, **check**, **frontier**, and **verdict**. Each has its own section below. Use them exactly, so one word means one thing across all three workflows, and so a finding written in one is legible in the next.
 
 The vocabulary is the forge's, and so is the storage: git carries the change, the diff, and the history, while the forge carries the review. Every operation below runs through a **provider adapter**, so a step names the operation and the adapter names the command.
 

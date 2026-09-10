@@ -5,9 +5,16 @@ argument-hint: "<target-branch> or nothing"
 disable-model-invocation: true
 ---
 
+# Open a pull request
+
 Turn the work on the current branch into a pull request on the forge. `pr-review` is what runs next on what this skill opens.
 
-Every step below opens by naming the skills it calls. Call each one through the Skill tool at that point, before doing the step's own work.
+This skill is built on a shared vocabulary:
+
+- Call the Skill tool with `pr` for the forge vocabulary (**forge**, **adapter**, **target**, **pair**, **drift**, **check**, **frontier**) and the operation contract every step below calls by name. Resolve the adapter first and say which forge you got.
+- **The target** and **the case** below are this skill's own vocabulary: the branch the change merges into, and the description that makes the argument for it.
+
+The other skills are step-local: each step names the ones it calls, and calls them before doing its own work.
 
 ## The target
 
@@ -48,7 +55,7 @@ Drop a section with nothing to say in it. A **pair**, one change split across tw
 
 ### 1. Read the change
 
-Call the Skill tool with `pr`, then resolve the forge adapter and say which forge you got. Read what the branch adds before writing a word about it:
+Read what the branch adds before writing a word about it:
 
 ```bash
 git status --short                     # a dirty tree is uncommitted work, not PR work
@@ -58,7 +65,7 @@ git diff <target>...HEAD --stat
 
 Check whether the branch already has an open PR, because one means the change is up already and step 5 updates it instead of opening a second.
 
-**Done when** the target resolves, every commit and changed file on the branch is accounted for, the tree is clean, and any existing PR for this branch is named with its ID.
+**Done when** the forge is named, the target resolves, every commit and changed file on the branch is accounted for, the tree is clean, and any existing PR for this branch is named with its ID.
 
 ### 2. Check the change is ready to read
 
@@ -86,7 +93,7 @@ Write the title and the description to a file, so step 5 passes the body as a fi
 
 ### 5. Open the PR
 
-Call the Skill tool with `pr` for the create and update mechanics. Push the branch first, because a PR against an unpushed head has nothing to show:
+Push the branch first, because a PR against an unpushed head has nothing to show:
 
 ```bash
 git fetch origin <source-branch>   # a branch already on the remote may hold work you do not

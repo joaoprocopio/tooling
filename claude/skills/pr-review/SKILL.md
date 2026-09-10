@@ -5,9 +5,16 @@ argument-hint: "<ref>, a PR id, or nothing"
 disable-model-invocation: true
 ---
 
-Review a change along two axes, Standards and Spec, and land the findings on the forge. `pr-fix` is the other half of the loop: it works the findings this skill posts.
+# Review a change
 
-Every step below opens by naming the skills it calls. Call each one through the Skill tool at that point, before doing the step's own work.
+Review a change along two axes, **Standards** and **Spec**, and land the findings on the forge. `pr-fix` is the other half of the loop: it works the findings this skill posts.
+
+This skill is built on a shared vocabulary and a shared brief:
+
+- Call the Skill tool with `pr` for the forge vocabulary (**forge**, **adapter**, **fixed point**, **pair**, **budget**, **anchor**, **drift**, **thread**, **suggestion**, **blocker**, **check**, **verdict**) and the operation contract every step below calls by name. Resolve the adapter first and say which forge you got.
+- [`axes.md`](axes.md) carries the two briefs, the spec and standards sources, the smell baseline, and the eight fields a finding comes back with. Step 2 dispatches from it.
+
+The other skills are step-local: each step names the ones it calls, and calls them before doing its own work.
 
 ## The fixed point
 
@@ -27,13 +34,13 @@ Post a finding that changes the code or changes the merge decision. A finding th
 
 ### 1. Resolve the subject
 
-Call the Skill tool with `pr`, then resolve the forge adapter and say which forge you got. Read `pr.identity` for every side of the subject, then fetch and check out, so the diff the axes measure is the head you report on and the head SHA is a fact rather than an assumption. Read `pr.files` before the diff itself, since its shape sets step 2's budget.
+Read `pr.identity` for every side of the subject, then fetch and check out, so the diff the axes measure is the head you report on and the head SHA is a fact rather than an assumption. Read `pr.files` before the diff itself, since its shape sets step 2's budget.
 
-**Done when** the fixed point, the source branch, the head SHA, the description, and the changed files are known for every side of the subject, and a local branch holds each one.
+**Done when** the forge is named, the fixed point, the source branch, the head SHA, the description, and the changed files are known for every side of the subject, and a local branch holds each one.
 
 ### 2. Measure both axes
 
-Read `axes.md`, relative to this skill: it carries the spec source, the standards source, the smell baseline, the two briefs, and the fields a finding comes back with. Resolve both sources, then dispatch the two axes in parallel in a single message, each with its brief and the baseline pasted in.
+Resolve the spec and standards sources the way `axes.md` orders them, then dispatch the two axes in parallel in a single message, each with its brief and the smell baseline pasted in.
 
 Run the two axes once per side of a pair, giving each run the other sides as context, so a finding can name the sibling repo while each anchor stays inside the side that owns the line.
 
@@ -69,7 +76,7 @@ Carry the fields `axes.md` returned into what you post: the **file** and the **l
 
 ### 5. Post the review
 
-Call the Skill tool with `pr` for the thread and blocker mechanics. Post each finding on its anchor through `thread.create`, post a repeat as a reply on the thread that already carries it, and raise each blocking finding through `blocker.create` against the thread that carries its evidence.
+Post each finding on its anchor through `thread.create`, post a repeat as a reply on the thread that already carries it, and raise each blocking finding through `blocker.create` against the thread that carries its evidence.
 
 Read back through `thread.list` and confirm each anchor is the one step 3 intended. A rejected post is the forge refusing the anchor: re-run `pr.diff-line` and post again.
 

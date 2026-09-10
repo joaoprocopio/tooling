@@ -5,9 +5,16 @@ argument-hint: "<PR id> or nothing"
 disable-model-invocation: true
 ---
 
+# Work the review feedback
+
 Read the review feedback on a change, settle what it asks for, land the fixes, and close every thread. `pr-review` is the other half of the loop: it posts the findings this skill works.
 
-Every step below opens by naming the skills it calls. Call each one through the Skill tool at that point, before doing the step's own work.
+This skill is built on a shared vocabulary:
+
+- Call the Skill tool with `pr` for the forge vocabulary (**forge**, **adapter**, **pair**, **anchor**, **drift**, **thread**, **suggestion**, **blocker**, **check**, **frontier**) and the operation contract every step below calls by name. Resolve the adapter first and say which forge you got.
+- **The fork** and the four end states below are this skill's own vocabulary: every finding carries one label from each, and the labels decide which step handles it.
+
+The other skills are step-local: each step names the ones it calls, and calls them before doing its own work.
 
 ## The subject
 
@@ -37,11 +44,11 @@ A finding ends in one of four states, and step 5 puts it there:
 
 ### 1. Read the feedback and check out
 
-Call the Skill tool with `pr`, then resolve the forge adapter and say which forge you got. Check the branch out first, so steps 4 and 5 have the branch they edit.
+Check the branch out first, so steps 4 and 5 have the branch they edit.
 
 Read every live thread through `thread.list`, general and anchored. The general comment carries no anchor and is where the reviewer names what blocks the merge, so read it like any other finding and give it the whole diff as its subject. Read `blocker.list` alongside, because step 5 closes each blocker against the merge decision.
 
-**Done when** every live thread is listed with its ID, its anchor, the change it asks for, and any suggestion or blocker attached to it.
+**Done when** the forge is named, and every live thread is listed with its ID, its anchor, the change it asks for, and any suggestion or blocker attached to it.
 
 ### 2. Sort every finding
 
@@ -71,7 +78,7 @@ Run the repo's own checks, the way `pr` describes them.
 
 ### 5. Reply and close out
 
-Call the Skill tool with `pr` for the thread mechanics, and with `writing-guidelines` for the reply bodies. Push first, so every reply cites a SHA that exists on the remote, and re-read the remote before pushing the way `pr` describes branch drift, since a reviewer who pushed while step 4 ran is about to be overwritten. Then send one `thread.reply` per finding and put it in its end state:
+Call the Skill tool with `writing-guidelines` for the reply bodies. Push first, so every reply cites a SHA that exists on the remote, and re-read the remote before pushing the way `pr` describes branch drift, since a reviewer who pushed while step 4 ran is about to be overwritten. Then send one `thread.reply` per finding and put it in its end state:
 
 - **Fixed**: name what changed and the commit that changed it, then `thread.resolve` it and lift its blocker through `blocker.resolve`
 - **Answered**: give the reason it takes no change, cite the file or spec that carries the evidence, then resolve it
