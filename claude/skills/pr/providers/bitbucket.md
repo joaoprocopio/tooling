@@ -7,7 +7,9 @@ This adapter serves two things:
 
 `twg` auto-detects `-w <workspace>` and `-r <repo>` from the git remote of the working directory. Pass both explicitly whenever a command runs outside the PR's own checkout, which is every command on a **pair**.
 
-Read the auth guard in the `twg` skill before running anything: on an auth error, report the remediation and wait, rather than running a login or setup command.
+On an auth error, report the remediation and wait, rather than running a login or setup command.
+
+Anchors, threads, blockers, and the verdict live in [`bitbucket-feedback.md`](bitbucket-feedback.md), which `pr-review` and `pr-fix` load alongside this file.
 
 ## Output
 
@@ -42,64 +44,27 @@ The two halves of the CLI disagree, so check the column before writing a command
 | `thread.resolve`  | `twg bb pull-requests comment resolve --pull-request <id> --comment <thread-id>`                                                                 |
 | `thread.reopen`   | `twg bb pull-requests comment reopen --pull-request <id> --comment <thread-id>`                                                                  |
 | `blocker.list`    | `twg bb pull-requests task query <id> -o json`                                                                                                   |
-| `blocker.create`  | `twg bb pull-requests task create --pull-request <id> --text "..." [--comment <thread-id>]`                                                      |
+| `blocker.create`  | `twg bb pull-requests task create --pull-request <id> --text "<the ask>" [--comment <thread-id>]`                                                |
 | `blocker.resolve` | `twg bb pull-requests task resolve --pull-request <id> --task <task-id>`                                                                         |
 | `checks.read`     | `twg bb pull-requests get <id> --statuses -o json`                                                                                               |
-| `checks.log`      | `twg bb pipeline latest-failure --branch <source-branch> [--lines 200]`                                                                          |
+| `checks.log`      | `twg bb pipeline latest-failure --branch <source-branch> [--lines 200]`, and `twg bb pipeline grep "<pattern>"` for one assertion out of a long log |
 | `verdict`         | `twg bb pull-requests approve <id>` / `request-changes <id>` / `decline <id>`                                                                    |
-| `pr.create`       | `twg bb pull-requests create --title "..." --source <branch> --dest <branch> --description-file <file.md> [--reviewer <user>]... [--draft]`      |
-| `pr.update`       | `twg bb pull-requests update --pull-request <id> --title "..." --description-file <file.md> [--dest <branch>] [--ready] [--add-reviewer <user>]` |
+| `pr.create`       | `twg bb pull-requests create --title "<title>" --source <branch> --dest <branch> --description-file <file.md> [--reviewer <user>]... [--draft]`  |
+| `pr.update`       | `twg bb pull-requests update --pull-request <id> --title "<title>" --description-file <file.md> [--dest <branch>] [--ready] [--add-reviewer <user>]` |
 | `pr.reviewers`    | `effective-default-reviewer query -o json` for who the repo adds; `get <id> -o json` `.reviewers` for who is requested                           |
 | `pr.queue`        | `twg bb inbox --scope workspace --role reviewer -o json`                                                                                         |
 
 `get <id> --full` hydrates identity, statuses, diff, and comments in one call, which beats four reads on a PR small enough to hold whole.
 
-`pr.identity` reads the fields from these paths: target is `destination.branch.name`, source branch `source.branch.name`, head SHA `source.commit.hash`, and source repo `source.repository.full_name`, which differs from the destination's on a fork.
-
-## Anchors
-
-`comment create` takes the anchor flags directly, and they are the four the contract names:
-
-- `--path <file> --line <n>`: new side, the added or destination side.
-- `--path <file> --from-line <n>`: old side; a deleted file takes only this.
-- `--path <file> --start-line <a> --end-line <b>`: a range on the new side, which is what a multi-line suggestion takes. `--start-from-line`/`--end-from-line` is the old-side range.
-- no `--path`: general.
-
-## Threads
-
-Every comment write takes `--comment <id>`, and resolution takes the **top-level** comment's ID, so a thread ID is the ID of the comment that opens the thread. Replies cannot be resolved, reopened, or replied to.
-
-In `comment query` output, each comment holds its anchor in `inline.path`, `inline.to`, and `inline.from`, and `parent.id` when it is a reply. `resolution` is a non-empty object when the thread is resolved; `deleted` and `pending` are flags. A thread is **live** when its opening comment has no `parent`, is not `deleted`, and carries an empty `resolution`.
-
-`comment reopen --pull-request <id> --comment <thread-id>` reopens one that closed early.
-
-## Blockers
-
-Bitbucket serves blockers first-class, so a blocker becomes a real task rather than a line in a comment. A task is its own object with its own ID, attached to a thread through `--comment <thread-id>` or standing alone:
-
-```bash
-twg bb pull-requests task create  --pull-request <id> --text "..." [--comment <thread-id>]
-twg bb pull-requests task query   <id> -o json          # maps task IDs to their threads
-twg bb pull-requests task resolve --pull-request <id> --task <task-id>
-twg bb pull-requests task reopen  --pull-request <id> --task <task-id>
-```
-
-A task ID differs from the thread ID it hangs off. `--task` takes the task ID, and `task query` is where a step reads it. A blocker takes both halves: the inline thread carries the finding and the evidence, and the task carries the one-line ask that gates the merge.
-
-`task update --resolve` and `--reopen` duplicate the dedicated verbs; prefer `task resolve` and `task reopen`, which say what they do.
+`pr.identity` reads the fields from these paths: target is `destination.branch.name`, source branch `source.branch.name`, head SHA `source.commit.hash`, and source repo `source.repository.full_name`, which differs from the destination's on a forked repo.
 
 ## Checks
 
-`get <id> --statuses` returns the builds reported on the head under `_statuses`, each with a `name`, a `state` of `SUCCESSFUL`, `FAILED`, `INPROGRESS`, or `STOPPED`, and a `url`. An empty list means no build reports to this PR. There is no wait flag: a build still `INPROGRESS` is re-read after a pause sized to the pipeline's usual run.
+`get <id> --statuses` returns the builds reported on the head under `_statuses`, each with a `name`, a `state` of `SUCCESSFUL`, `FAILED`, `INPROGRESS`, or `STOPPED`, and a `url`. An empty list means no build reports to this PR.
 
-A failed build reads its log through the pipeline, not the PR:
+There is no wait flag. A build still `INPROGRESS` is re-read twice at 60 seconds; still pending after that is a result, per `pr`.
 
-```bash
-twg bb pipeline latest-failure --branch <source-branch> [--lines 200]   # --lines defaults to 40, and 0 is the whole log
-twg bb pipeline grep "<pattern>"                                        # one assertion out of a long log
-```
-
-`grep` is what a long log takes: it returns the matching lines alone, so the finding costs a search instead of a context.
+A failed build reads its log through the pipeline, not the PR, per the `checks.log` row. `--lines` defaults to 40, and 0 is the whole log. `grep` is what a long log takes: it returns the matching lines alone, so the finding costs a search instead of a context.
 
 If a sandboxed pipeline log request shows a network-blocked message, an S3 hostname, or a log-only HTTP 403 while metadata succeeds, that is a sandbox restriction, not an auth failure.
 
@@ -109,7 +74,5 @@ If a sandboxed pipeline log request shows a network-blocked message, an S3 hostn
 
 ## Not served
 
-- **`--pending` review batching**: `comment create --pending` holds a comment as draft feedback, and `twg` has no command that submits it. A pending comment stays invisible until someone finishes the review in the Bitbucket web UI. Post comments outright unless the user asks for a draft and accepts that hand-off.
 - **Applying a suggestion**: no command applies one. `pr` describes the manual apply.
 - **Checkout**: no command clones or checks out. Fetch the head with `git`, per `pr`.
-- **A verdict message**: `approve`, `request-changes`, and `decline` take no text, so the reason goes in a general comment posted first. `unapprove` and `remove-request-changes` withdraw one.

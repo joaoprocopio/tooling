@@ -1,6 +1,6 @@
 # Review feedback mechanics
 
-The half of `pr` that only reviewing a change and working its feedback reach. `pr-review` and `pr-fix` read it after `pr`; `pr-open` does not.
+The half of `pr` that reviewing a change and working its feedback reach. `pr-review` and `pr-fix` read it after `pr`; `pr-open` does not.
 
 ## Anchors
 

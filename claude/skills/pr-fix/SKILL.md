@@ -9,7 +9,7 @@ disable-model-invocation: true
 
 Read the review feedback on a change, settle what it asks for, land the fixes, and close every thread. `pr-review` is the other half of the loop: it posts the findings this skill works.
 
-Call the Skill tool with `pr` first, and read its `feedback.md`, for the forge vocabulary and the operation contract every step below calls by name. **The fork** and the four end states are this skill's own words: every finding carries one label from each, and the labels decide which step handles it.
+Call the Skill tool with `pr` first, and read its `feedback.md` and the adapter's `<forge>-feedback.md`, for the forge vocabulary and the operation contract every step below calls by name. **The split** and the four end states are this skill's own words: every finding carries one label from each, and the labels decide which step handles it.
 
 ## The subject
 
@@ -17,9 +17,9 @@ The skill's argument names the feedback to work:
 
 - **A PR id**: every live thread on it is in scope
 - **A pair**: every live thread across both sides is in scope, and a fix in one repo can settle a finding in its sibling
-- **Nothing**: read `pr.queue` for what is waiting on the user, offer it, and ask which before reading
+- **Nothing**: read `pr.queue` for what is waiting on the user, offer it, and ask which before reading. With no user to ask, `pr` says to report the queue and stop
 
-## The fork
+## The split
 
 Every live finding is one of two, and the label decides which step handles it:
 
@@ -51,7 +51,7 @@ Read the anchored code before labelling, because the finding is a claim about th
 
 Resolve drift here. A review lands against a head that has since moved, so confirm each anchor against the current head through `pr.diff-line` before carrying its number into any later step.
 
-**Done when** every finding carries one label from the fork, a current anchor, and, when settled, the change it takes.
+**Done when** every finding carries one label from the split, a current anchor, and, when settled, the change it takes.
 
 ### 3. Grill the open findings
 
@@ -63,7 +63,7 @@ An answer can also be that the reviewer is wrong, which routes the finding to **
 
 ### 4. Apply the fixes
 
-Check the branch out first, so this step and step 5 have the branch they edit. Then call the Skill tool with `karpathy-guidelines`, which governs the edit. Change what the finding asks for and stop there. Apply an attached suggestion the way `pr` describes. Keep one commit per finding, so step 5 can cite a SHA apiece.
+Check the branch out first, so this step and step 5 have the branch they edit. A dirty tree stops the step, per `pr`: report the files and let the user settle them, rather than stashing work that is not yours. Then call the Skill tool with `karpathy-guidelines`, which governs the edit. Change what the finding asks for and stop there. Apply an attached suggestion the way `pr` describes. Keep one commit per finding, so step 5 can cite a SHA apiece.
 
 Run the repo's own checks, the way `pr` describes them.
 

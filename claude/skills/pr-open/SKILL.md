@@ -9,11 +9,11 @@ disable-model-invocation: true
 
 Turn the work on the current branch into a pull request on the forge. `pr-review` is what runs next on what this skill opens.
 
-Call the Skill tool with `pr` first, for the forge vocabulary and the operation contract every step below calls by name. **The case** is this skill's own word: the description that makes the argument for the change.
+Call the Skill tool with `pr` first, for the forge vocabulary and the operation contract every step below calls by name. Opening a change needs the adapter alone, not its feedback half. **The case** is this skill's own word: the description that makes the argument for the change.
 
 ## The case
 
-The **case** is the description: what the diff cannot show. The reviewer reads the code from the diff. The description spends its lines on the problem the change answers, the decisions it makes and the alternatives it turned down, and the evidence that it works. A description that narrates the diff file by file makes no case and costs the reviewer a read.
+The **case** is the description: what the diff cannot show. The reviewer reads the code from the diff. The description spends its lines on the problem the change answers, the decisions it makes and the alternatives it turned down, and the evidence that it works. A description that narrates the diff file by file makes no case.
 
 ```markdown
 ## What
@@ -47,7 +47,9 @@ git log --oneline <target>..HEAD
 git diff <target>...HEAD --stat
 ```
 
-Carry a disagreement between the argument and the fork point to step 3. Check whether the branch already has an open PR, because one means the change is up already and step 5 updates it.
+Carry a disagreement between the argument and the base to step 3. Check whether the branch already has an open PR: one means step 5 updates rather than creates, which is the first thing that step decides.
+
+A dirty tree stops the step, per `pr`: report the files and let the user say what belongs to this change.
 
 **Done when**:
 
@@ -90,9 +92,14 @@ git fetch origin <source-branch>   # a branch already on the remote may hold wor
 git push -u origin HEAD
 ```
 
-A remote branch that holds commits this one does not is branch drift, and `pr` says what to do about it.
+A remote branch that holds commits this one does not is branch drift, and `pr` says what to do about it. A rejected push is the same drift arriving late: re-read the remote and rebase, never `--force`.
 
-Then run `pr.create` with the target, the description file, the reviewers, and the draft flag from step 3. Read it back through `pr.identity` and confirm the target, the reviewers, and the state are the ones step 3 settled. Update an existing PR in place through `pr.update`. A pair opens both, then updates each description to carry the other's link, since neither link exists until both exist.
+Take the branch step 1 found:
+
+- **An existing PR**: `pr.update` with the title, the description file, the target, and the reviewers, then go to the read-back. `pr.create` against a PR that exists errors, and by then the push has already landed.
+- **No PR**: `pr.create` with the target, the description file, the reviewers, and the draft flag from step 3.
+
+Read it back through `pr.identity` and confirm the target, the reviewers, and the state are the ones step 3 settled. A pair opens both, then updates each description to carry the other's link, since neither link exists until both exist.
 
 Then read `checks.read` on the head, and `checks.log` for anything red. A check red for the change is step 2's work again: fix it and push. `pr` says what closes the step short of green.
 
