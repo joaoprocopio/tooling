@@ -1,6 +1,6 @@
 ---
 name: pr
-description: "Pull request mechanics shared by every review step: the forge adapter, the operation contract, the fixed point, anchors, drift, threads, suggestions, blockers, checks, and the verdict. Use when reviewing a change, opening one, or working review feedback."
+description: "Pull request mechanics shared by every review step: the forge adapter, the operation contract, the fixed point, the diff budget, anchors, drift, threads, suggestions, blockers, checks, and the verdict. Use when reviewing a change, opening one, or working review feedback."
 ---
 
 Reference for the mechanics every review step shares.
@@ -24,20 +24,29 @@ No adapter for the host means the workflow stops there. Name the host, name the 
 
 Workflows call these by name. An adapter that cannot serve one says so under its `## Not served` heading, alongside the fallback that replaces it.
 
-| Operation        | What it produces                                       |
-| ---------------- | ------------------------------------------------------ |
-| `pr.identity`    | target, source branch, head SHA, description           |
-| `pr.diff`        | the delta between the fixed point and the head         |
-| `pr.diff-line`   | the line numbers the diff carries for a piece of text  |
-| `thread.list`    | every live thread with its ID, anchor, and body        |
-| `thread.create`  | a thread anchored to a line                            |
-| `thread.reply`   | a reply under a thread                                 |
-| `thread.resolve` | a thread marked closed                                 |
-| `blocker.list`   | what gates the merge                                   |
-| `checks.read`    | the build result on the head                           |
-| `verdict`        | approve, request changes, or decline                   |
-| `pr.create`      | the change opened for review                           |
-| `pr.update`      | title, description, reviewers, or draft state changed  |
+| Operation         | What it produces                                              |
+| ----------------- | ------------------------------------------------------------- |
+| `pr.identity`     | target, source branch, head SHA, description                  |
+| `pr.files`        | the changed files with their added and removed counts         |
+| `pr.diff`         | the delta between the fixed point and the head                |
+| `pr.diff-line`    | the line numbers the diff carries for a piece of text         |
+| `thread.list`     | every live thread with its ID, anchor, and body               |
+| `thread.create`   | a thread anchored to a line                                   |
+| `thread.reply`    | a reply under a thread                                        |
+| `thread.resolve`  | a thread marked closed                                        |
+| `thread.reopen`   | a closed thread live again                                    |
+| `blocker.list`    | what gates the merge                                          |
+| `blocker.create`  | a finding raised as a gate on the merge                       |
+| `blocker.resolve` | a gate lifted                                                 |
+| `checks.read`     | the build result on the head                                  |
+| `checks.log`      | the log of the failing build                                  |
+| `verdict`         | approve, request changes, or decline                          |
+| `pr.create`       | the change opened for review                                  |
+| `pr.update`       | title, description, target, reviewers, or draft state changed |
+| `pr.reviewers`    | who the repo adds on its own, and who is already requested    |
+| `pr.queue`        | the changes waiting on this user, when no id was given        |
+
+Two operations can be one command. GitHub resolves a thread and lifts the blocker it carries with the same mutation, while Bitbucket serves each against its own id space. The contract keeps them apart so the adapter that separates them can, and an adapter that serves both with one command says so on both rows.
 
 ## Identity
 
@@ -68,6 +77,17 @@ git diff origin/<target>...origin/<source-branch>
 
 Fetching is the first command of any step that reads the diff. A step that edits and pushes the branch checks it out in its own step.
 
+## The diff budget
+
+Read a diff by parts once it is large enough to fill the context. Take the shape first, then the content:
+
+```bash
+git diff <fixed-point>...<head> --stat        # the shape: files and their size
+git diff <fixed-point>...<head> -- <path>     # one file, or one group of them
+```
+
+Past roughly a thousand changed lines, dispatch per group of files instead of once over the whole delta. Give each sub-agent the files it judges, plus the stat for the rest as its context.
+
 ## Anchors
 
 An **anchor** is a file and a line, in one of four shapes:
@@ -90,6 +110,16 @@ Measure drift against the head SHA that `pr.identity` returned when the review w
 ```bash
 git diff --stat <recorded-head>..HEAD    # empty output means no drift
 ```
+
+The branch drifts too. Someone else pushes to the source branch while a step is editing it, and the push that ends the step is then a push over their work. Any step that pushes re-reads the remote first:
+
+```bash
+git fetch origin <source-branch>
+git rev-parse origin/<source-branch>                    # against the SHA the step started from
+git log --oneline HEAD..origin/<source-branch>          # what arrived while the step ran
+```
+
+Rebase onto a remote that moved. A force-push belongs to the user: name what arrived and let them decide, since forcing over a reviewer's commit destroys work no thread records.
 
 ## Threads
 
@@ -130,7 +160,7 @@ Two sources report on a change, and a step reads both.
 
 Local checks come from the repo itself: read the test and lint commands from the package manifest, the task runner, or the CI config, rather than guessing them. `checks.read` returns the build the forge reports on the head.
 
-A check red for the change is work to redo. A check red for a cause outside the diff is named as such in the general comment, which is what closes a step short of green. A red build reads its log through the adapter's pipeline command rather than through the PR.
+A check red for the change is work to redo. A check red for a cause outside the diff is named as such in the general comment, which is what closes a step short of green. A red build reads its log through `checks.log`, which reaches the build system rather than the PR. Take the failing lines alone, since the whole log costs the context the finding needs.
 
 ## The frontier
 

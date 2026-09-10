@@ -1,7 +1,9 @@
-# Bitbucket — `twg bb pull-requests`, verified against twg 1.2.7
+# Bitbucket: `twg bb pull-requests`, verified against twg 1.2.7
 
-Hosts: `bitbucket.org`
-Detect: `git remote get-url origin` matches the host above, and `twg` is on PATH. On `command not found`, try `$HOME/.local/bin/twg`; when that also fails, stop and tell the user `twg` is missing.
+This adapter serves two things:
+
+- **Hosts**: `bitbucket.org`
+- **Detect**: `git remote get-url origin` matches the host above, and `twg` is on PATH. On `command not found`, try `$HOME/.local/bin/twg`; when that also fails, stop and tell the user `twg` is missing.
 
 `twg` auto-detects `-w <workspace>` and `-r <repo>` from the git remote of the working directory. Pass both explicitly whenever a command runs outside the PR's own checkout, which is every command on a **pair**.
 
@@ -15,7 +17,7 @@ A step that parses output asks for JSON and reads the envelope:
 twg bb pull-requests <cmd> --output json --output-summary stats
 ```
 
-That prints a YAML envelope on stdout and writes the full payload to a file. Read `stdout_inline` when it is present and complete; otherwise read the path under `output_files.compact`. There is **no `--output-file` flag** — do not pass one.
+That prints a YAML envelope on stdout and writes the full payload to a file. Read `stdout_inline` when it is present and complete; otherwise read the path under `output_files.compact`. The envelope is where the path comes from: there is **no `--output-file` flag**.
 
 `-o json` alone puts the whole payload on stdout, which is fine for a small read like `get` and wasteful for `comment query` on a busy PR.
 
@@ -28,20 +30,29 @@ The two halves of the CLI disagree, so check the column before writing a command
 
 ## Operations
 
-| Operation        | Command                                                                                                                                     |
-| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| `pr.identity`    | `twg bb pull-requests get <id> -o json`                                                                                                     |
-| `pr.diff`        | `twg bb pull-requests diff <id>`                                                                                                            |
-| `pr.diff-line`   | `twg bb pull-requests diff-line <id> --text "<distinctive text>" [--path <file>]`                                                           |
-| `thread.list`    | `twg bb pull-requests comment query <id> --output json --output-summary stats`                                                              |
-| `thread.create`  | `twg bb pull-requests comment create --pull-request <id> [--path <file> --line <n>] --text "$(cat <body.md>)"`                              |
-| `thread.reply`   | `twg bb pull-requests comment create --pull-request <id> --reply-to <thread-id> --text "$(cat <body.md>)"`                                  |
-| `thread.resolve` | `twg bb pull-requests comment resolve --pull-request <id> --comment <thread-id>`                                                            |
-| `blocker.list`   | `twg bb pull-requests task query <id> -o json`                                                                                              |
-| `checks.read`    | `twg bb pull-requests get <id> --statuses -o json`                                                                                          |
-| `verdict`        | `twg bb pull-requests approve <id>` / `request-changes <id>` / `decline <id>`                                                               |
-| `pr.create`      | `twg bb pull-requests create --title "..." --source <branch> --dest <branch> --description-file <file.md> [--reviewer <user>]... [--draft]` |
-| `pr.update`      | `twg bb pull-requests update --pull-request <id> --title "..." --description-file <file.md> [--ready] [--add-reviewer <user>]`              |
+| Operation         | Command                                                                                                                                     |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pr.identity`     | `twg bb pull-requests get <id> -o json`                                                                                                     |
+| `pr.files`        | `twg bb pull-requests diffstat <id> -n 200 -o json`                                                                                         |
+| `pr.diff`         | `twg bb pull-requests diff <id>`                                                                                                            |
+| `pr.diff-line`    | `twg bb pull-requests diff-line <id> --text "<distinctive text>" [--path <file>]`                                                           |
+| `thread.list`     | `twg bb pull-requests comment query <id> --output json --output-summary stats`                                                              |
+| `thread.create`   | `twg bb pull-requests comment create --pull-request <id> [--path <file> --line <n>] --text "$(cat <body.md>)"`                              |
+| `thread.reply`    | `twg bb pull-requests comment create --pull-request <id> --reply-to <thread-id> --text "$(cat <body.md>)"`                                  |
+| `thread.resolve`  | `twg bb pull-requests comment resolve --pull-request <id> --comment <thread-id>`                                                            |
+| `thread.reopen`   | `twg bb pull-requests comment reopen --pull-request <id> --comment <thread-id>`                                                             |
+| `blocker.list`    | `twg bb pull-requests task query <id> -o json`                                                                                              |
+| `blocker.create`  | `twg bb pull-requests task create --pull-request <id> --text "..." [--comment <thread-id>]`                                                 |
+| `blocker.resolve` | `twg bb pull-requests task resolve --pull-request <id> --task <task-id>`                                                                    |
+| `checks.read`     | `twg bb pull-requests get <id> --statuses -o json`                                                                                          |
+| `checks.log`      | `twg bb pipeline latest-failure --branch <source-branch> [--lines 200]`                                                                     |
+| `verdict`         | `twg bb pull-requests approve <id>` / `request-changes <id>` / `decline <id>`                                                               |
+| `pr.create`       | `twg bb pull-requests create --title "..." --source <branch> --dest <branch> --description-file <file.md> [--reviewer <user>]... [--draft]` |
+| `pr.update`       | `twg bb pull-requests update --pull-request <id> --title "..." --description-file <file.md> [--dest <branch>] [--ready] [--add-reviewer <user>]` |
+| `pr.reviewers`    | `twg bb pull-requests effective-default-reviewer query -o json`                                                                             |
+| `pr.queue`        | `twg bb inbox --scope workspace --role reviewer -o json`                                                                                    |
+
+`get <id> --full` hydrates identity, statuses, diff, and comments in one call, which beats four reads on a PR small enough to hold whole.
 
 `pr.identity` reads the fields from these paths: target is `destination.branch.name`, source branch `source.branch.name`, head SHA `source.commit.hash`, and source repo `source.repository.full_name`, which differs from the destination's on a fork.
 
@@ -49,10 +60,10 @@ The two halves of the CLI disagree, so check the column before writing a command
 
 `comment create` takes the anchor flags directly, and they are the four the contract names:
 
-- `--path <file> --line <n>` — new side, the added or destination side.
-- `--path <file> --from-line <n>` — old side; a deleted file takes only this.
-- `--path <file> --start-line <a> --end-line <b>` — a range on the new side, which is what a multi-line suggestion takes. `--start-from-line`/`--end-from-line` is the old-side range.
-- no `--path` — general.
+- `--path <file> --line <n>`: new side, the added or destination side.
+- `--path <file> --from-line <n>`: old side; a deleted file takes only this.
+- `--path <file> --start-line <a> --end-line <b>`: a range on the new side, which is what a multi-line suggestion takes. `--start-from-line`/`--end-from-line` is the old-side range.
+- no `--path`: general.
 
 Take every line number from `diff-line` rather than from the local file. A rejected post is the server refusing the anchor: re-run `diff-line` and re-anchor rather than retrying the same number.
 
@@ -75,7 +86,9 @@ twg bb pull-requests task resolve --pull-request <id> --task <task-id>
 twg bb pull-requests task reopen  --pull-request <id> --task <task-id>
 ```
 
-A task ID differs from the thread ID it hangs off, so read `task query` whenever a step needs one. A blocker takes both halves: the inline thread carries the finding and the evidence, and the task carries the one-line ask that gates the merge.
+A task ID differs from the thread ID it hangs off, so read `task query` whenever a step needs one, and never pass a thread ID where `--task` is expected. A blocker takes both halves: the inline thread carries the finding and the evidence, and the task carries the one-line ask that gates the merge.
+
+`task update --resolve` and `--reopen` duplicate the dedicated verbs; prefer `task resolve` and `task reopen`, which say what they do.
 
 ## Checks
 
@@ -84,8 +97,11 @@ A task ID differs from the thread ID it hangs off, so read `task query` whenever
 A failed build reads its log through the pipeline, not the PR:
 
 ```bash
-twg bb pipeline latest-failure --branch <source-branch> [--lines 200]
+twg bb pipeline latest-failure --branch <source-branch> [--lines 200]   # --lines defaults to 40, and 0 is the whole log
+twg bb pipeline grep "<pattern>"                                        # one assertion out of a long log
 ```
+
+`grep` is what a long log takes: it returns the matching lines rather than the run, so the finding costs a search instead of a context.
 
 If a sandboxed pipeline log request shows a network-blocked message, an S3 hostname, or a log-only HTTP 403 while metadata succeeds, that is a sandbox restriction, not an auth failure.
 
@@ -95,7 +111,7 @@ If a sandboxed pipeline log request shows a network-blocked message, an S3 hostn
 
 ## Not served
 
-- **`--pending` review batching** — `comment create --pending` holds a comment as draft feedback, and `twg` has no command that submits it. A pending comment stays invisible until someone finishes the review in the Bitbucket web UI. Post comments outright unless the user asks for a draft and accepts that hand-off.
-- **Applying a suggestion** — no command applies one. Apply a suggestion that came the other way by editing the anchored lines yourself, per `pr`.
-- **Checkout** — no command clones or checks out. Fetch the head with `git`, per `pr`.
-- **A verdict message** — `approve`, `request-changes`, and `decline` take no text, so the reason goes in a general comment posted first. All three are the reviewer's terminal act and belong to the user: state the verdict you would give and let the user run the command. `unapprove` and `remove-request-changes` withdraw one.
+- **`--pending` review batching**: `comment create --pending` holds a comment as draft feedback, and `twg` has no command that submits it. A pending comment stays invisible until someone finishes the review in the Bitbucket web UI. Post comments outright unless the user asks for a draft and accepts that hand-off.
+- **Applying a suggestion**: no command applies one. Apply a suggestion that came the other way by editing the anchored lines yourself, per `pr`.
+- **Checkout**: no command clones or checks out. Fetch the head with `git`, per `pr`.
+- **A verdict message**: `approve`, `request-changes`, and `decline` take no text, so the reason goes in a general comment posted first. All three are the reviewer's terminal act and belong to the user: state the verdict you would give and let the user run the command. `unapprove` and `remove-request-changes` withdraw one.

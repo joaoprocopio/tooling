@@ -15,7 +15,7 @@ The skill's argument is what the diff measures against, and it decides every ste
 
 - **A PR id, or a pair**: the fixed point is each PR's declared target, read from `pr.identity`
 - **A ref**: `HEAD~1`, a tag, a SHA, or a branch, and the review covers that delta
-- **Nothing**: ask which before measuring
+- **Nothing**: read `pr.queue` for what is waiting on the user, offer it, and ask which before measuring
 
 Confirm the ref resolves and the diff is non-empty before dispatching the axes, because a bad ref is cheaper to catch here than inside two sub-agents.
 
@@ -27,19 +27,21 @@ Post a finding that changes the code or changes the merge decision. A finding th
 
 ### 1. Resolve the subject
 
-Call the Skill tool with `pr`, then resolve the forge adapter and say which forge you got. Read `pr.identity` for every side of the subject, then fetch and check out, so the diff the axes measure is the head you report on and the head SHA is a fact rather than an assumption.
+Call the Skill tool with `pr`, then resolve the forge adapter and say which forge you got. Read `pr.identity` for every side of the subject, then fetch and check out, so the diff the axes measure is the head you report on and the head SHA is a fact rather than an assumption. Read `pr.files` before the diff itself, since its shape sets step 2's budget.
 
-**Done when** the fixed point, the source branch, the head SHA, and the description are known for every side of the subject, and a local branch holds each one.
+**Done when** the fixed point, the source branch, the head SHA, the description, and the changed files are known for every side of the subject, and a local branch holds each one.
 
 ### 2. Measure both axes
 
-Call the Skill tool with `code-review`, and dispatch both axes in parallel in a single message. Run the two axes once per side of a pair, giving each run the other sides as context, so a finding can name the sibling repo while each anchor stays inside the side that owns the line.
+Read `axes.md`, relative to this skill: it carries the spec source, the standards source, the smell baseline, the two briefs, and the fields a finding comes back with. Resolve both sources, then dispatch the two axes in parallel in a single message, each with its brief and the baseline pasted in.
 
-The Spec axis measures against two sources: the originating spec, and the change's own claim about itself, which is the PR description when there is one and the delta's commit messages when there is not. **Divergence between the two is a finding.**
+Run the two axes once per side of a pair, giving each run the other sides as context, so a finding can name the sibling repo while each anchor stays inside the side that owns the line.
+
+Dispatch per group of files when `pr.files` says the diff is large, the way `pr` budgets one.
 
 When the diff touches a file an agent reads, call the Skill tool with `writing-for-agents` and judge that file by it.
 
-**Done when** every finding carries an anchor.
+**Done when** every finding carries the fields `axes.md` names, including the line text step 3 anchors it by.
 
 ### 3. Check every finding
 
@@ -61,13 +63,13 @@ Call the Skill tool with `writing-guidelines`, and with `writing-for-agents` whe
 - **Anchored**: state what is wrong, cite the evidence from the file or the spec, and show the output. One subject per finding.
 - **Suggestion**: when the fix is a known set of lines, carry it as a suggestion block, so the author applies it instead of retyping it.
 
-Give every finding the four fields `pr-fix` sorts on: **file**, **line**, the **change** it asks for, and its **axis**. Mark the ones that gate the merge as blockers.
+Carry the fields `axes.md` returned into what you post: the **file** and the **line** step 3 anchored, the **change** it asks for, and its **axis**, which is what `pr-fix` sorts on. Mark the ones that gate the merge as blockers.
 
 **Done when** every sentence asserts a fact checked in step 3.
 
 ### 5. Post the review
 
-Call the Skill tool with `pr` for the thread and blocker mechanics. Post each finding on its anchor through `thread.create`, post a repeat as a reply on the thread that already carries it, and raise every blocker the way the adapter serves blockers.
+Call the Skill tool with `pr` for the thread and blocker mechanics. Post each finding on its anchor through `thread.create`, post a repeat as a reply on the thread that already carries it, and raise each blocking finding through `blocker.create` against the thread that carries its evidence.
 
 Read back through `thread.list` and confirm each anchor is the one step 3 intended. A rejected post is the forge refusing the anchor: re-run `pr.diff-line` and post again.
 

@@ -15,7 +15,7 @@ The skill's argument names the feedback to work:
 
 - **A PR id**: every live thread on it is in scope
 - **A pair**: every live thread across both sides is in scope, and a fix in one repo can settle a finding in its sibling
-- **Nothing**: ask which PR before reading
+- **Nothing**: read `pr.queue` for what is waiting on the user, offer it, and ask which before reading
 
 ## The fork
 
@@ -71,15 +71,15 @@ Run the repo's own checks, the way `pr` describes them.
 
 ### 5. Reply and close out
 
-Call the Skill tool with `pr` for the thread mechanics, and with `writing-guidelines` for the reply bodies. Push first, so every reply cites a SHA that exists on the remote. Then send one `thread.reply` per finding and put it in its end state:
+Call the Skill tool with `pr` for the thread mechanics, and with `writing-guidelines` for the reply bodies. Push first, so every reply cites a SHA that exists on the remote, and re-read the remote before pushing the way `pr` describes branch drift, since a reviewer who pushed while step 4 ran is about to be overwritten. Then send one `thread.reply` per finding and put it in its end state:
 
-- **Fixed**: name what changed and the commit that changed it, then `thread.resolve` it and close its blocker
+- **Fixed**: name what changed and the commit that changed it, then `thread.resolve` it and lift its blocker through `blocker.resolve`
 - **Answered**: give the reason it takes no change, cite the file or spec that carries the evidence, then resolve it
-- **Deferred**: name the issue now tracking the work and the reason it sits outside this change, then resolve it and close its blocker
+- **Deferred**: name the issue now tracking the work and the reason it sits outside this change, then resolve it and lift its blocker through `blocker.resolve`
 - **Discussed**: ask the question or contest the claim with the evidence, and leave the thread open for the reviewer
 
-Read `checks.read` on the pushed head. A check red for the change is step 4's work again, so reopen the thread it belongs to and go back. A check red for a cause outside the diff takes a reply of its own on the general comment naming that cause, which is what closes this step short of green.
+Read `checks.read` on the pushed head, and `checks.log` for anything red, since the failing lines say which finding it belongs to. A check red for the change is step 4's work again, so put its thread back through `thread.reopen` and go back. A check red for a cause outside the diff takes a reply of its own on the general comment naming that cause, which is what closes this step short of green.
 
-Reopen any thread the reviewer revives, and work it from step 2.
+A thread the reviewer revives is live again: take it through `thread.reopen` when the forge closed it, and work it from step 2.
 
 **Done when** every thread from step 1 carries a reply, every fixed, answered, or deferred one reads as resolved on the forge, and the pushed head is green or carries the reply explaining why it is not.

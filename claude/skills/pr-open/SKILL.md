@@ -70,7 +70,7 @@ Read the diff for what belongs to a different change: a stray file, a debug line
 
 ### 3. Grill the gaps
 
-Call the Skill tool with `grilling` and carry the whole frontier into one round, the way `pr` describes it: the reason behind each decision a reviewer would question, the target when step 1 left it ambiguous, the reviewers beyond whatever the repo adds on its own, and whether the PR opens as a draft. The diff shows the decisions and hides the reasons, and the reasons are what the case is made of.
+Call the Skill tool with `grilling` and carry the whole frontier into one round, the way `pr` describes it: the reason behind each decision a reviewer would question, the target when step 1 left it ambiguous, the reviewers beyond the ones `pr.reviewers` says the repo adds on its own, and whether the PR opens as a draft. The diff shows the decisions and hides the reasons, and the reasons are what the case is made of.
 
 When no user is there to answer, open as a draft and write each unanswered question into the Notes section, which keeps the decision with a human.
 
@@ -89,11 +89,14 @@ Write the title and the description to a file, so step 5 passes the body as a fi
 Call the Skill tool with `pr` for the create and update mechanics. Push the branch first, because a PR against an unpushed head has nothing to show:
 
 ```bash
+git fetch origin <source-branch>   # a branch already on the remote may hold work you do not
 git push -u origin HEAD
 ```
 
+A remote branch that holds commits this one does not is branch drift, and `pr` says what to do about it.
+
 Then run `pr.create` with the target, the description file, the reviewers, and the draft flag from step 3. Read it back through `pr.identity` and confirm the target, the reviewers, and the state are the ones step 3 settled. Update an existing PR in place through `pr.update` rather than opening a second. A pair opens both, then updates each description to carry the other's link, since neither link exists until both exist.
 
-Then read `checks.read` on the head. A check red for the change is step 2's work again, so fix it and push. One red for a cause outside the diff is named as such in the PR, which is what closes this step short of green.
+Then read `checks.read` on the head, and `checks.log` for anything red. A check red for the change is step 2's work again, so fix it and push. One red for a cause outside the diff is named as such in the PR, which is what closes this step short of green.
 
 **Done when** the PR exists with its ID, target, reviewers, and state reported; both sides of a pair link each other; and the head is green or carries the note explaining why it is not.
