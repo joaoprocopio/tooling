@@ -9,7 +9,7 @@ disable-model-invocation: true
 
 Read the review feedback on a change, settle what it asks for, land the fixes, and close every thread. `pr-review` is the other half of the loop: it posts the findings this skill works.
 
-Call the Skill tool with `pr` first, and read its `feedback.md` and the adapter's `<forge>-feedback.md`, for the forge vocabulary and the operation contract every step below calls by name. **The split** and the four end states are this skill's own words: every finding carries one label from each, and the labels decide which step handles it.
+Call the Skill tool with `pr` first, for the forge vocabulary and the operation contract every step below calls by name. **The split** and the four end states are this skill's own words: every finding carries one label from each, and the labels decide which step handles it.
 
 ## The subject
 

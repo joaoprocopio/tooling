@@ -9,7 +9,7 @@ disable-model-invocation: true
 
 Turn the work on the current branch into a pull request on the forge. `pr-review` is what runs next on what this skill opens.
 
-Call the Skill tool with `pr` first, for the forge vocabulary and the operation contract every step below calls by name. Opening a change needs the adapter alone, not its feedback half. **The case** is this skill's own word: the description that makes the argument for the change.
+Call the Skill tool with `pr` first, for the forge vocabulary and the operation contract every step below calls by name. **The case** is this skill's own word: the description that makes the argument for the change.
 
 ## The case
 

@@ -2,12 +2,7 @@
 
 For a human adding a forge. No workflow loads this file.
 
-An adapter is two files per forge, named for the host in the git remote:
-
-- `<forge>.md`: identity, files, diff, checks, create, update, reviewers, queue. Every workflow loads it.
-- `<forge>-feedback.md`: anchors, threads, blockers, verdict. `pr-review` and `pr-fix` load it; `pr-open` does not.
-
-Add the host to the table in `pr/SKILL.md` under **The forge**, which is what routes a remote to an adapter.
+One file per forge, named for the host in the git remote: `github.md`, `bitbucket.md`, and whatever a new forge is called. Add the host to the table in `pr/SKILL.md` under **The forge**, which is what routes a remote to an adapter.
 
 An adapter is a table, nothing more. It maps each operation in the contract to that forge's CLI and declares the ones it cannot serve, so the workflows never name a command.
 

@@ -9,7 +9,7 @@ disable-model-invocation: true
 
 Review a change along two axes, **Standards** and **Spec**, and land the findings on the forge. `pr-fix` is the other half of the loop: it works the findings this skill posts.
 
-Call the Skill tool with `pr` first, and read its `feedback.md` and the adapter's `<forge>-feedback.md`, for the forge vocabulary and the operation contract every step below calls by name. [`axes.md`](axes.md) carries the two briefs, the spec and standards sources, the smell baseline, and the eight fields a finding comes back with. Step 2 dispatches from it.
+Call the Skill tool with `pr` first, for the forge vocabulary and the operation contract every step below calls by name. [`axes.md`](axes.md) carries the two briefs, the spec and standards sources, the smell baseline, and the eight fields a finding comes back with. Step 2 dispatches from it.
 
 ## The fixed point
 
@@ -77,7 +77,7 @@ Zero findings is a result: post the general comment naming what the change deliv
 
 ### 5. Post the review
 
-Post the findings the way the adapter's feedback file says. Where the forge takes a batched review, that is the default here, because step 3 confirmed every anchor and one call stays under the rate limit a per-finding loop provokes; a rejected batch names its bad anchor, so drop that one to a general comment and re-send the rest. Where the forge has no batch, post each finding on its anchor through `thread.create`.
+Post the findings the way the adapter says. Where the forge takes a batched review, that is the default here, because step 3 confirmed every anchor and one call stays under the rate limit a per-finding loop provokes; a rejected batch names its bad anchor, so drop that one to a general comment and re-send the rest. Where the forge has no batch, post each finding on its anchor through `thread.create`.
 
 Post a repeat as a reply on the thread that already carries it, and raise each blocking finding through `blocker.create` against the thread that carries its evidence.
 
