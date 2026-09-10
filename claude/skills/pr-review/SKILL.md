@@ -1,41 +1,43 @@
 ---
 name: pr-review
-description: "Review a change against a fixed point along two axes, and return findings anchored to the line."
+description: "Review a change against a fixed point along two axes, and post findings anchored to the line."
 argument-hint: "<ref>, a PR id, or nothing"
 disable-model-invocation: true
 ---
 
-Review a change along two axes: Standards and Spec. Call the Skill tool for `pr` first, which carries the fixed point, checkout, anchors, drift, the review file, suggestions, blockers, and the voice every step below uses. `pr-fix` is the other half of the loop: it works the findings this skill writes.
+Review a change along two axes, Standards and Spec, and land the findings on the forge. `pr-fix` is the other half of the loop: it works the findings this skill posts.
+
+Every step below opens by naming the skills it calls. Call each one through the Skill tool at that point, before doing the step's own work.
 
 ## The fixed point
 
-The skill's argument is what the diff is measured against, and it decides every step below:
+The skill's argument is what the diff measures against, and it decides every step below:
 
-- **A ref**: `HEAD~1`, a tag, a SHA, or a branch. The review covers that delta.
-- **A PR id, or a pair**: the fixed point is each PR's declared target. This needs an adapter; with none loaded, resolve the target as a branch and review the delta against it.
-- **Nothing**: ask which before measuring.
+- **A PR id, or a pair**: the fixed point is each PR's declared target, read from `pr.identity`
+- **A ref**: `HEAD~1`, a tag, a SHA, or a branch, and the review covers that delta
+- **Nothing**: ask which before measuring
 
 Confirm the ref resolves and the diff is non-empty before dispatching the axes, because a bad ref is cheaper to catch here than inside two sub-agents.
 
 ## The bar
 
-Post a finding that changes the code or changes the merge decision. A finding that changes neither belongs in the report alone, where it costs the author a read instead of a thread. `karpathy-guidelines` sets what counts as a finding at all.
+Post a finding that changes the code or changes the merge decision. A finding that changes neither belongs in the chat report alone, where it costs the author a read instead of a thread. Call the Skill tool with `karpathy-guidelines` for what counts as a finding at all.
 
 ## Process
 
-### 1. Resolve the subject (`pr`)
+### 1. Resolve the subject
 
-Resolve detached or attached, and say which in the first message. Then fetch and check out, so the diff the axes measure is the head that will be reported and the head SHA is a fact from git.
+Call the Skill tool with `pr`, then resolve the forge adapter and say which forge you got. Read `pr.identity` for every side of the subject, then fetch and check out, so the diff the axes measure is the head you report on and the head SHA is a fact rather than an assumption.
 
 **Done when** the fixed point, the source branch, the head SHA, and the description are known for every side of the subject, and a local branch holds each one.
 
-### 2. Measure both axes (`code-review`)
+### 2. Measure both axes
 
-Dispatch both axes in parallel, in a single message. Run the two axes once per side of a pair, giving each run the other sides as context, so a finding can name the sibling repo while each anchor stays inside the side that owns the line.
+Call the Skill tool with `code-review`, and dispatch both axes in parallel in a single message. Run the two axes once per side of a pair, giving each run the other sides as context, so a finding can name the sibling repo while each anchor stays inside the side that owns the line.
 
-The Spec axis measures against two sources: the originating spec and the change's own claim about itself — the PR description when there is one, the delta's commit messages when there is not. **Divergence between the two is a finding.**
+The Spec axis measures against two sources: the originating spec, and the change's own claim about itself, which is the PR description when there is one and the delta's commit messages when there is not. **Divergence between the two is a finding.**
 
-When the diff touches a file an agent reads, `writing-for-agents` judges that file.
+When the diff touches a file an agent reads, call the Skill tool with `writing-for-agents` and judge that file by it.
 
 **Done when** every finding carries an anchor.
 
@@ -43,36 +45,38 @@ When the diff touches a file an agent reads, `writing-for-agents` judges that fi
 
 A sub-agent's finding is a hypothesis until a command reproduces it. Five checks eliminate most of them:
 
-- **The repo beats the bar**: what the spec asks for by number is not excess, and a documented standard beats a generic smell.
-- **The anchor lands in a hunk**: take every line number from `pr.diff-line`, because a comment on the wrong line discredits the rest and a line outside every hunk is refused outright.
-- **The head is the one you reviewed**: compare it against step 1's SHA, and say so in the general comment when it advanced.
-- **The finding is new**: read the live findings from the prior review of this branch, because one that repeats an existing finding belongs in that section as a reply.
-- **The old finding is spent**: one from an earlier run whose subject the current head fixes gets resolved instead of repeated, which is what makes a second review of the same branch safe.
+- **The repo beats the bar**: what the spec asks for by number is not excess, and a documented standard beats a generic smell
+- **The anchor lands in a hunk**: take every line number from `pr.diff-line`, because a comment on the wrong line discredits the rest and a line outside every hunk is refused outright
+- **The head is the one you reviewed**: compare it against step 1's SHA, and say so in the general comment when it advanced
+- **The finding is new**: read the live threads through `thread.list`, because a finding that repeats an open one belongs in that thread as a reply
+- **The old finding is spent**: one from an earlier run whose subject the current head fixes gets resolved instead of repeated, which is what makes a second review of the same branch safe
 
-**Done when** every finding has been reproduced, dropped, or folded into the one that already carries it, and every spent finding reads as resolved.
+**Done when** every finding has been reproduced, dropped, or folded into the thread that already carries it, and every spent finding reads as resolved.
 
-### 4. Write the review (`writing-guidelines`, `writing-for-agents`)
+### 4. Write the review
 
-One general comment, and one anchored finding per line that clears the bar:
+Call the Skill tool with `writing-guidelines`, and with `writing-for-agents` when the diff touches a file an agent reads. Then write one general comment, plus one anchored finding per line that clears the bar:
 
 - **General**: open with what the change delivers, name what blocks the merge, and close with the count per axis. Link the sibling when there is a pair.
 - **Anchored**: state what is wrong, cite the evidence from the file or the spec, and show the output. One subject per finding.
 - **Suggestion**: when the fix is a known set of lines, carry it as a suggestion block, so the author applies it instead of retyping it.
 
-Give every finding the four fields `pr-fix` sorts on: **file**, **line**, the **change** it asks for, and its **axis**. Mark the ones that gate the merge `blocker: yes`.
+Give every finding the four fields `pr-fix` sorts on: **file**, **line**, the **change** it asks for, and its **axis**. Mark the ones that gate the merge as blockers.
 
 **Done when** every sentence asserts a fact checked in step 3.
 
-### 5. Land the review (`pr`)
+### 5. Post the review
 
-Detached, write the review file to `.claude/reviews/<branch>-<head-short>.md` and tell the user the path: that file is the deliverable, and `pr-fix` takes it as its subject.
+Call the Skill tool with `pr` for the thread and blocker mechanics. Post each finding on its anchor through `thread.create`, post a repeat as a reply on the thread that already carries it, and raise every blocker the way the adapter serves blockers.
 
-Attached, post each finding on its anchor through `thread.create`, a repeat as a reply on the section that already carries it, and raise every blocker the way the adapter serves blockers. The review file is still written, as the local record of what was posted.
+Read back through `thread.list` and confirm each anchor is the one step 3 intended. A rejected post is the forge refusing the anchor: re-run `pr.diff-line` and post again.
 
-**Done when** the review exists at a named path, its anchors are the ones step 3 intended, and every merge blocker appears exactly once.
+**Done when** every finding appears on the forge exactly once, on the anchor step 3 intended, and every merge blocker is raised exactly once.
 
 ### 6. Report the findings
 
-Report `## Standards` and `## Spec` as separate sections, each ranked within itself, and give the count and the worst finding per axis: one winner picked across both axes collapses the separation. Close on the verdict you would give — approve, request changes, or decline — and, attached, leave the command to the user.
+Report `## Standards` and `## Spec` as separate sections in chat, each ranked within itself, and give the count and the worst finding per axis. One winner picked across both axes collapses the separation.
 
-**Done when** every finding from step 3 appears in exactly one section, and the review file's path is named.
+Close on the verdict you would give, approve, request changes, or decline, and leave the command to the user.
+
+**Done when** every finding from step 3 appears in exactly one section, and the PR carrying the threads is named with its ID.

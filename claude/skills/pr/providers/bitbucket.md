@@ -1,7 +1,7 @@
 # Bitbucket — `twg bb pull-requests`, verified against twg 1.2.7
 
 Hosts: `bitbucket.org`
-Detect: `git remote get-url origin` matches the host above, and `twg` is on PATH. On `command not found`, try `$HOME/.local/bin/twg` before falling back to detached.
+Detect: `git remote get-url origin` matches the host above, and `twg` is on PATH. On `command not found`, try `$HOME/.local/bin/twg`; when that also fails, stop and tell the user `twg` is missing.
 
 `twg` auto-detects `-w <workspace>` and `-r <repo>` from the git remote of the working directory. Pass both explicitly whenever a command runs outside the PR's own checkout, which is every command on a **pair**.
 
@@ -66,7 +66,7 @@ In `comment query` output, each comment holds its anchor in `inline.path`, `inli
 
 ## Blockers
 
-Bitbucket serves blockers first-class, so `blocker: yes` becomes a real task rather than a line in a file. A task is its own object with its own ID, attached to a thread through `--comment <thread-id>` or standing alone:
+Bitbucket serves blockers first-class, so a blocker becomes a real task rather than a line in a comment. A task is its own object with its own ID, attached to a thread through `--comment <thread-id>` or standing alone:
 
 ```bash
 twg bb pull-requests task create  --pull-request <id> --text "..." [--comment <thread-id>]

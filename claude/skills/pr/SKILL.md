@@ -1,60 +1,60 @@
 ---
 name: pr
-description: "Pull request review mechanics, independent of any forge: the fixed point, anchors, drift, the review file, threads, suggestions, blockers, checks, and verdict. Use when reviewing a change or working review feedback, or when another skill needs the review vocabulary."
+description: "Pull request mechanics shared by every review step: the forge adapter, the operation contract, the fixed point, anchors, drift, threads, suggestions, blockers, checks, and the verdict. Use when reviewing a change, opening one, or working review feedback."
 ---
 
-Reference for the mechanics every review step shares. `pr-open`, `pr-review`, and `pr-fix` are the workflows built on it, and each calls this skill first.
+Reference for the mechanics every review step shares.
 
-The vocabulary here is the forge's, but nothing here needs a forge. Git carries the change, the diff, and the history; a file carries the review. A provider adapter, when one exists, replaces the file with the server's own threads — the workflows never change, because they only ever name the operation.
+The vocabulary is the forge's, and so is the storage: git carries the change, the diff, and the history, while the forge carries the review. Every operation below runs through a **provider adapter**, so a step names the operation and the adapter names the command.
 
-## Detached and attached
+## The forge
 
-**Detached** is the default and needs nothing but `git`: the review lives in a file, findings are reported rather than posted, and fixes land as commits. **Attached** means a provider adapter is loaded and the same operations write to the forge instead.
-
-Resolve which one applies before step 1 of any workflow:
+Resolve the adapter before step 1 of any workflow:
 
 ```bash
 git remote get-url origin      # the host names the provider
-ls providers/                  # relative to this skill; empty means detached
+ls providers/                  # relative to this skill
 ```
 
-`providers/<name>.md` maps every operation in the contract below to that forge's CLI, and declares which operations it cannot serve. No file, or no matching host, means detached — say so once, in the first message, so the user knows the review will not be posted.
+`providers/<name>.md` maps every operation in the contract to that forge's CLI, and declares the operations it cannot serve. Load the file whose hosts match the remote, and say which forge you resolved in your first message.
+
+No adapter for the host means the workflow stops there. Name the host, name the adapters you found, and ask the user to point at the right one or to write it. Never substitute git for a missing operation: a review nobody can read on the forge is not a review.
 
 ## The operation contract
 
-The workflows call these by name. The **detached** column is the implementation when no adapter is loaded, and it is complete: no step is skipped for want of a forge.
+Workflows call these by name. An adapter that cannot serve one says so under its `## Not served` heading, alongside the fallback that replaces it.
 
-| Operation        | What it must produce                               | Detached                                           |
-| ---------------- | -------------------------------------------------- | -------------------------------------------------- |
-| `pr.identity`    | target, source branch, head SHA, description       | `git` refs plus the review file's front matter     |
-| `pr.diff`        | the delta between fixed point and head             | `git diff <base>...<head>`                         |
-| `pr.diff-line`   | the line numbers the diff carries for a text       | the anchor recipe below                            |
-| `thread.list`    | every live thread with ID, anchor, body            | the review file's open findings                    |
-| `thread.create`  | a thread anchored to a line                        | a finding section in the review file               |
-| `thread.reply`   | a reply under a thread                             | a reply block under that section                   |
-| `thread.resolve` | a thread marked closed                             | the section's `state` line                         |
-| `blocker.list`   | what gates the merge                               | findings marked `blocker: yes`                     |
-| `checks.read`    | the build result on the head                       | the repo's own checks, run locally                 |
-| `verdict`        | approve, request changes, decline                  | the verdict line in the report                     |
-| `pr.create`      | the change opened for review                       | `git push`, then the create URL handed to the user |
-| `pr.update`      | title, description, reviewers, draft state changed | the description file rewritten on disk             |
-
-An adapter that cannot serve an operation says so, and the operation falls back to its detached form for that run. It never silently does nothing.
+| Operation        | What it produces                                       |
+| ---------------- | ------------------------------------------------------ |
+| `pr.identity`    | target, source branch, head SHA, description           |
+| `pr.diff`        | the delta between the fixed point and the head         |
+| `pr.diff-line`   | the line numbers the diff carries for a piece of text  |
+| `thread.list`    | every live thread with its ID, anchor, and body        |
+| `thread.create`  | a thread anchored to a line                            |
+| `thread.reply`   | a reply under a thread                                 |
+| `thread.resolve` | a thread marked closed                                 |
+| `blocker.list`   | what gates the merge                                   |
+| `checks.read`    | the build result on the head                           |
+| `verdict`        | approve, request changes, or decline                   |
+| `pr.create`      | the change opened for review                           |
+| `pr.update`      | title, description, reviewers, or draft state changed  |
 
 ## Identity
 
-A change is a **source** branch merged into a **target**. The target is a decision, not a default: it is wrong whenever the change **stacks**, sitting on top of another branch still in review.
+A change is a **source** branch merged into a **target**. For a PR that exists, read both from `pr.identity` rather than assuming them. The target is a decision, not a default: it is wrong whenever the change **stacks**, sitting on top of another branch still in review.
+
+For a branch with no PR yet, git is the source:
 
 ```bash
 git branch --show-current
 git merge-base --fork-point main HEAD     # where the branch left the trunk
 git log --oneline --decorate main..HEAD   # what it adds
-git rev-parse HEAD                        # the head SHA, a fact rather than an assumption
+git rev-parse HEAD                        # the head SHA as a fact, not an assumption
 ```
 
-The **fixed point** is what the diff is measured against: the target for a branch under review, or any ref — `HEAD~1`, a tag, a SHA — when the subject is a bare delta. Confirm it resolves and the diff is non-empty before dispatching any work against it.
+The **fixed point** is what the diff measures against: the PR's target, or any ref such as `HEAD~1`, a tag, or a SHA when the subject is a bare delta. Confirm it resolves and the diff is non-empty before dispatching work against it.
 
-A **pair** is one change split across repos. Each side declares its own target, so read the target from each rather than copying it from the sibling, and read every side before judging any one of them.
+A **pair** is one change split across two repos. Each side declares its own target, so read `pr.identity` per side and read every side before judging any one of them.
 
 ## Checkout
 
@@ -62,85 +62,53 @@ Fetch the head and stay on the branch you are on:
 
 ```bash
 git fetch origin <source-branch>
-git rev-parse origin/<source-branch>    # differs from the recorded head means it moved since the read
+git rev-parse origin/<source-branch>    # a SHA other than the recorded head means it moved
 git diff origin/<target>...origin/<source-branch>
 ```
 
-Fetching is the first move of any step that reads the diff. A step that edits and pushes the branch checks it out itself, in its own step.
+Fetching is the first command of any step that reads the diff. A step that edits and pushes the branch checks it out in its own step.
 
 ## Anchors
 
-An **anchor** is a file and a line:
+An **anchor** is a file and a line, in one of four shapes:
 
-- a line on the **new** side, the added or destination side, which is what a suggestion takes.
-- a line on the **old** side, the removed or source side, which is all a deleted file takes.
-- a **range** on the new side, for a suggestion replacing several lines.
-- **general**, carrying no anchor, which is where the summary and the merge blockers go.
+- **New side**: a line the diff adds, which is what a suggestion takes
+- **Old side**: a line the diff removes, which is all a deleted file takes
+- **Range**: several lines on the new side, for a suggestion replacing more than one
+- **General**: no anchor at all, which is where the summary and the merge blockers go
 
-An anchor holds only on a line the diff carries. Take every line number from the diff rather than from the local file:
+An anchor holds only on a line the diff carries. Take every line number from `pr.diff-line`, giving it the distinctive text of the line and the file path, rather than reading a number off the local file. Local numbers and diff numbers disagree whenever the head moves or the hunk shifts.
 
-```bash
-# new-side line numbers for every added line in <file>
-git diff -U0 <base>...HEAD -- <file> \
-  | awk '/^\+\+\+/{next} /^@@/{ n=$3; sub(/^\+/,"",n); split(n,p,","); ln=p[1]+0; next } /^\+/{ print ln"\t"substr($0,2); ln++ }'
-
-# old-side line numbers for every removed line
-git diff -U0 <base>...HEAD -- <file> \
-  | awk '/^---/{next} /^@@/{ n=$2; sub(/^-/,"",n); split(n,p,","); ln=p[1]+0; next } /^-/{ print ln"\t"substr($0,2); ln++ }'
-```
-
-A finding about a line outside every hunk goes in a general comment that names the file and line in its text. Attached, a rejected post is the server refusing the anchor: re-read the diff and re-anchor rather than retrying the same number.
+A finding about a line outside every hunk goes in a general comment naming the file and line in its text. A rejected post is the server refusing the anchor: re-run `pr.diff-line` and re-anchor rather than retrying the same number.
 
 ## Drift
 
 **Drift** is what a new commit does to an anchor. The head advances, and a line number written against an older head now points at different code. Confirm the anchored line still holds the code the finding describes, re-anchor when it moved, and carry the new number forward. A finding whose subject the current head no longer contains is answered by the head itself.
 
-Detached, the review file's `head:` is what drift is measured against:
+Measure drift against the head SHA that `pr.identity` returned when the review was written:
 
 ```bash
-git diff --stat <recorded-head>..HEAD    # empty means no drift
+git diff --stat <recorded-head>..HEAD    # empty output means no drift
 ```
 
-## The review file
+## Threads
 
-Detached, this file is the thread store. It is the deliverable of `pr-review` and the subject of `pr-fix`, and it is what makes the loop close without a forge.
+A thread is one subject: the finding, its evidence, and the replies under it. A thread is **live** while the forge reports it unresolved, and `thread.list` is what the fix loop reads.
 
-Write it to `.claude/reviews/<branch>-<head-short>.md`. It is an artifact, not source: gitignore that directory unless the team decides to track reviews on purpose. Say where it landed.
+Two rules hold on every forge:
 
-```markdown
----
-base: <fixed-point SHA>
-head: <SHA reviewed>
-branch: <source branch>
-generated: <ISO date>
----
-
-# Review — <one line naming the change>
-
-<The general comment: what the change delivers, what blocks the merge, the count per axis.>
-
-## F1 · src/api/client.ts:42 · standards
-state: open
-blocker: yes
-
-What is wrong, the evidence from the file or the spec, and the output.
-```
-
-One `##` section per finding. The heading carries the ID, the anchor, and the axis; `state` and `blocker` are each one word on their own line, so a later step can update one without rewriting the section.
-
-`state` is one of **open**, **fixed**, **answered**, **deferred**, or **discussed** — the five the fix loop puts a finding in. A finding is **live** while its state is `open` or `discussed`.
-
-A reply is a `> ` block appended to the section, prefixed with who wrote it. Attached, the same text goes to `thread.reply` instead.
+- **A thread ID is the ID of the comment that opens it.** Replies hang off that ID, and resolution takes it.
+- **One subject per thread.** A second subject is a second `thread.create`, so the author can resolve each one on its own.
 
 ## Writing
 
-Call the Skill tool for `writing-guidelines` before writing any comment body: active, concise, filler cut. `writing-for-agents` governs the cut when the diff touches a file an agent reads, because agents read review comments too: keep the sentences that change a decision, and phrase the ask positively, saying what to do.
+Call the Skill tool with `writing-guidelines` before writing any comment body, so the prose stays active and concise. When the diff touches a file an agent reads, also call the Skill tool with `writing-for-agents`, because agents read review comments too: keep the sentences that change a decision, and phrase the ask positively by saying what to do.
 
-State what is wrong, cite the evidence, show the output. One subject per comment.
+State what is wrong, cite the evidence, and show the output.
 
 ## Suggestions
 
-Write a suggestion by fencing the replacement lines in the body, which gives the author a one-click apply on every forge that renders it and a copyable block everywhere else:
+Write a suggestion by fencing the replacement lines in the body, which gives the author a one-click apply on every forge that renders it:
 
 ````text
 ```suggestion
@@ -154,20 +122,22 @@ Apply one that came the other way by editing the anchored lines yourself: read t
 
 ## Blockers
 
-A **blocker** is a finding that gates the merge. It takes both halves: the finding carries the evidence, and one line names the change that unblocks it. Detached, that is `blocker: yes` plus the general comment listing them. Attached, an adapter with first-class tasks raises one against the thread; an adapter without them raises the merge block through its verdict instead.
+A **blocker** is a finding that gates the merge. It takes both halves: the thread carries the evidence, and one line names the change that unblocks it. An adapter with first-class tasks raises a task against the thread; an adapter without them raises the merge block through its verdict. `blocker.list` is what a later step closes each one against.
 
-## Local checks
+## Checks
 
-Every workflow runs the repo's own checks, reading the command from the environment rather than guessing: the test and lint scripts in the package manifest, the task runner, or the CI config.
+Two sources report on a change, and a step reads both.
 
-A check red for the change is work to redo. A check red for a cause outside the diff is named as such, in the general comment, which is what closes a step short of green. Detached, this is the whole of `checks.read`; attached, an adapter adds the build the forge reports on the head, and a red build reads its log through the pipeline rather than through the PR.
+Local checks come from the repo itself: read the test and lint commands from the package manifest, the task runner, or the CI config, rather than guessing them. `checks.read` returns the build the forge reports on the head.
+
+A check red for the change is work to redo. A check red for a cause outside the diff is named as such in the general comment, which is what closes a step short of green. A red build reads its log through the adapter's pipeline command rather than through the PR.
 
 ## The frontier
 
-Two workflows put open questions to the user, and both do it the same way. Call the Skill tool for `grilling`, carrying the whole frontier into a single interview: it asks a whole frontier per round, so one pass settles the batch. Give every question the evidence — the anchored code, the reviewer's words — and your recommended answer, taken from the code and the commits.
+Two workflows put open questions to the user. Call the Skill tool with `grilling` and carry the whole frontier into a single interview, since it asks a whole frontier per round and one pass settles the batch. Give every question its evidence, the anchored code or the reviewer's words, plus your recommended answer taken from the code and the commits.
 
-When no user is there to answer, never pick silently. Route the decision to a human by the workflow's own fallback: open as draft with the questions in Notes, or leave the finding `discussed` with the question written into it.
+When no user is there to answer, route the decision to a human instead of picking silently: open as a draft with the questions in Notes, or leave the finding open with the question written into it.
 
 ## Verdict
 
-The verdict is **approve**, **request changes**, or **decline**, and it is the reviewer's terminal act. Detached, it closes the report. Attached, it belongs to the user: state the verdict you would give and let the user run the command.
+The verdict is **approve**, **request changes**, or **decline**, and it is the reviewer's terminal act. It belongs to the user: state the verdict you would give and let the user run the command.

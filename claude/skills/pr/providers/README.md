@@ -1,6 +1,6 @@
 # Provider adapters
 
-One file per forge, named for the host in the git remote: `github.md`, `bitbucket.md`, `gitlab.md`. `pr` loads the matching one and runs attached; no match means detached, and every workflow still completes.
+One file per forge, named for the host in the git remote: `github.md`, `bitbucket.md`, `gitlab.md`. `pr` loads the file whose hosts match the remote. No match means the workflow stops and asks the user which forge to use, since every review operation runs through an adapter.
 
 An adapter is a table, nothing more. It maps each operation in the contract to that forge's CLI and declares the ones it cannot serve, so the workflows never name a command.
 
