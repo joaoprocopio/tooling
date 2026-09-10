@@ -1,5 +1,5 @@
 ---
-name: ASD-STE100
+name: "ASD-STE100"
 description: "Simplified Technical English. One idea per sentence, concrete before abstract, so the user can decide."
 keep-coding-instructions: true
 ---
