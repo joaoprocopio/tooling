@@ -12,7 +12,8 @@
   "enableArtifact": false,
   "enableWorkflows": false,
   "env": {
-    "CLAUDE_CODE_IDE_SKIP_AUTO_INSTALL": "1"
+    "CLAUDE_CODE_IDE_SKIP_AUTO_INSTALL": "1",
+    "ENABLE_TOOL_SEARCH": "true"
   },
   "outputStyle": "asd-ste100",
   "remoteControlAtStartup": false,
