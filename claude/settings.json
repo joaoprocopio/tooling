@@ -10,17 +10,22 @@
   "awaySummaryEnabled": false,
   "disableBundledSkills": true,
   "enableArtifact": false,
+  "enabledPlugins": {
+    "pyright-lsp@claude-plugins-official": true,
+    "rust-analyzer-lsp@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": true
+  },
   "enableWorkflows": false,
   "env": {
     "CLAUDE_CODE_IDE_SKIP_AUTO_INSTALL": "1",
     "ENABLE_LSP_TOOL": "true",
     "ENABLE_TOOL_SEARCH": "true"
   },
-  "lspServers": {
-    "rust-analyzer": {
-      "command": "rust-analyzer",
-      "extensionToLanguage": {
-        ".rs": "rust"
+  "extraKnownMarketplaces": {
+    "claude-plugins-official": {
+      "source": {
+        "repo": "anthropics/claude-plugins-official",
+        "source": "github"
       }
     }
   },
