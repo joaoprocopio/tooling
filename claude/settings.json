@@ -13,9 +13,17 @@
   "enableWorkflows": false,
   "env": {
     "CLAUDE_CODE_IDE_SKIP_AUTO_INSTALL": "1",
+    "ENABLE_LSP_TOOL": "true",
     "ENABLE_TOOL_SEARCH": "true"
   },
-  "model": "opus[1m]",
+  "lspServers": {
+    "rust-analyzer": {
+      "command": "rust-analyzer",
+      "extensionToLanguage": {
+        ".rs": "rust"
+      }
+    }
+  },
   "outputStyle": "asd-ste100",
   "remoteControlAtStartup": false,
   "spinnerTipsEnabled": false,
