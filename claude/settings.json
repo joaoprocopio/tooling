@@ -16,18 +16,14 @@
     "ENABLE_TOOL_SEARCH": "true"
   },
   "model": "opus[1m]",
-  "modelSettings": {
-    "claude-fable-5-1": {
-      "effortLevel": "medium"
-    },
-    "claude-opus-5": {
-      "effortLevel": "medium"
-    }
-  },
   "outputStyle": "asd-ste100",
   "remoteControlAtStartup": false,
+  "spinnerTipsEnabled": false,
   "switchModelsOnFlag": false,
   "theme": "auto",
   "verbose": true,
+  "voice": {
+    "enabled": false
+  },
   "workflowKeywordTriggerEnabled": false
 }
